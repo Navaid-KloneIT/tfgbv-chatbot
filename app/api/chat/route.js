@@ -1,4 +1,3 @@
-// app/api/chat/route.js
 import OpenAI from 'openai';
 import { NextResponse } from 'next/server';
 
@@ -67,10 +66,10 @@ export async function POST(req) {
     ];
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-5', // or 'gpt-3.5-turbo' for lower costs
+      model: 'gpt-4-turbo', // Fixed model name
       messages: openaiMessages,
       temperature: 0.5, // Lower temperature for more predictable, structured output
-      max_tokens: 2000,
+      max_completion_tokens: 2000, // Changed from max_tokens to max_completion_tokens
       // --- ADDED FOR ANALYZER MODE: Instruct the model to output JSON ---
       response_format: mode === 'analyzer' ? { type: 'json_object' } : { type: 'text' },
     });
