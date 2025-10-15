@@ -1,36 +1,524 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+TFGBV Support Chatbot
+=====================
 
-## Getting Started
+A comprehensive NextJS chatbot application designed to provide confidential support and information about Technology-Facilitated Gender-Based Violence (TFGBV) in Pakistan. The application features two modes: a Support Chat for survivors and a Content Analyzer for journalists and content creators.
 
-First, run the development server:
+Table of Contents
+-----------------
 
-```bash
+*   [Purpose](#purpose)
+*   [Features](#features)
+*   [Technologies Used](#technologies-used)
+*   [Installation](#installation)
+*   [Environment Variables](#environment-variables)
+*   [Running the Application](#running-the-application)
+*   [Project Structure](#project-structure)
+*   [API Endpoints](#api-endpoints)
+*   [Contributing](#contributing)
+*   [License](#license)
+*   [Support](#support)
+
+Purpose
+-------
+
+This chatbot serves two primary purposes:
+
+1.  **Support Chat Mode**: Provides confidential support, information, and resources for women experiencing Technology-Facilitated Gender-Based Violence (TFGBV) in Pakistan. It offers guidance on digital safety, legal rights, reporting mechanisms, and available support services.
+    
+2.  **Content Analyzer Mode**: Assists journalists and content creators in reviewing and improving their content based on feminist, gender-sensitive, and media-sensitive parameters developed by Uks Research Centre.
+    
+
+Features
+--------
+
+### Support Chat Mode
+
+*   Multilingual support (English, Urdu, Sindhi)
+*   Confidential and private conversations
+*   Emergency contact information
+*   Quick action buttons for common queries
+*   Culturally sensitive responses
+*   Information about legal rights under Pakistani law
+*   Digital safety guidance
+
+### Content Analyzer Mode
+
+*   Text analysis for gender sensitivity
+*   Content revision suggestions
+*   Document upload support (`.docx` files)
+*   Structured feedback with explanations
+*   JSON-formatted analysis results
+
+### General Features
+
+*   Responsive design for mobile and desktop
+*   Mode switching between Support and Analyzer
+*   Real-time chat interface
+*   File upload capability for document analysis
+
+Technologies Used
+-----------------
+
+Technology
+
+Purpose
+
+**Next.js**
+
+Full-stack React framework
+
+**React**
+
+UI library
+
+**Tailwind CSS**
+
+Utility-first CSS framework
+
+**OpenAI API**
+
+AI-powered chat and analysis backend
+
+**Mammoth.js**
+
+Reading `.docx` file content
+
+**Lucide React**
+
+Icon library
+
+Installation
+------------
+
+### Prerequisites
+
+*   Node.js (v18 or higher)
+*   npm or yarn
+*   OpenAI API key
+
+### Clone from GitHub
+
+bash
+
+Line Wrapping
+
+Collapse
+
+Copy
+
+9
+
+1
+
+2
+
+›
+
+git clone https://github.com/Navaid-KloneIT/tfgbv-chatbot.git
+
+cd tfgbv-chatbot
+
+### Install Dependencies
+
+bash
+
+Line Wrapping
+
+Collapse
+
+Copy
+
+9
+
+1
+
+2
+
+3
+
+›
+
+npm install
+
+\# or
+
+yarn install
+
+Environment Variables
+---------------------
+
+Create a `.env.local` file in the root of your project and add the following:
+
+env
+
+Line Wrapping
+
+Collapse
+
+Copy
+
+9
+
+1
+
+›
+
+OPENAI\_API\_KEY=your\_openai\_api\_key\_here
+
+To get an OpenAI API key:
+
+1.  Visit [OpenAI's website](https://openai.com/)
+2.  Sign up or log in to your account
+3.  Navigate to the API section
+4.  Generate a new API key
+5.  Copy the key and add it to your `.env.local` file
+
+Running the Application
+-----------------------
+
+### Development Mode
+
+bash
+
+Line Wrapping
+
+Collapse
+
+Copy
+
+9
+
+1
+
+2
+
+3
+
+›
+
 npm run dev
-# or
+
+\# or
+
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+bash
 
-## Learn More
+Line Wrapping
 
-To learn more about Next.js, take a look at the following resources:
+Collapse
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Copy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+9
 
-## Deploy on Vercel
+1
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3
+
+4
+
+5
+
+›
+
+npm run build
+
+npm start
+
+\# or
+
+yarn build
+
+yarn start
+
+Project Structure
+-----------------
+
+Line Wrapping
+
+Collapse
+
+Copy
+
+99
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+›
+
+tfgbv-chatbot/
+
+├── app/
+
+│ ├── api/
+
+│ │ └── chat/
+
+│ │ └── route.js # API endpoint for chat functionality
+
+│ ├── components/
+
+│ │ └── TFGBVChatbot.jsx # Main chatbot component
+
+│ ├── globals.css # Global styles
+
+│ ├── layout.js # Root layout component
+
+│ └── page.js # Home page component
+
+├── public/ # Static assets
+
+├── .env.local # Environment variables (not in git)
+
+├── .gitignore # Git ignore file
+
+├── package.json # Project dependencies and scripts
+
+├── README.md # This file
+
+└── tailwind.config.js # Tailwind CSS configuration
+
+API Endpoints
+-------------
+
+### POST /api/chat
+
+Handles chat requests for both Support and Analyzer modes.
+
+**Request Body:**
+
+json
+
+Line Wrapping
+
+Collapse
+
+Copy
+
+99
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+›
+
+⌄
+
+⌄
+
+⌄
+
+{
+
+"messages": \[
+
+{
+
+"role": "user",
+
+"content": "Your message here",
+
+"timestamp": "2023-10-15T19:05:15.000Z"
+
+}
+
+\],
+
+"language": "en",
+
+"mode": "support"
+
+}
+
+**Response (Support Mode):**
+
+json
+
+Line Wrapping
+
+Collapse
+
+Copy
+
+9
+
+1
+
+2
+
+3
+
+›
+
+⌄
+
+{
+
+"message": "AI response here"
+
+}
+
+**Response (Analyzer Mode):**
+
+json
+
+Line Wrapping
+
+Collapse
+
+Copy
+
+99
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+›
+
+⌄
+
+⌄
+
+⌄
+
+{
+
+"revisedText": "Revised content here",
+
+"analysis": \[
+
+{
+
+"originalSnippet": "Original text snippet",
+
+"issueType": "Gender-Sensitivity",
+
+"explanation": "Explanation of the issue",
+
+"suggestion": "Suggestion for improvement"
+
+}
+
+\]
+
+}
+
+Contributing
+------------
+
+We welcome contributions to improve the TFGBV Support Chatbot. Please follow these steps:
+
+1.  Fork the repository
+2.  Create a new branch (`git checkout -b feature/amazing-feature`)
+3.  Commit your changes (`git commit -m 'Add some amazing feature'`)
+4.  Push to the branch (`git push origin feature/amazing-feature`)
+5.  Open a Pull Request
+
+### Code Style Guidelines
+
+*   Use ES6+ syntax
+*   Follow React best practices
+*   Maintain consistent indentation (2 spaces)
+*   Write meaningful commit messages
+*   Add comments for complex logic
+
+License
+-------
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Support
+-------
+
+If you encounter any issues or have questions about the TFGBV Support Chatbot, please:
+
+1.  Check the [Issues](https://github.com/Navaid-KloneIT/tfgbv-chatbot/issues) page to see if your question has already been addressed.
+2.  Create a new issue with detailed information about the problem.
+3.  For security concerns, please email us at `security@example.com`.
+
+Acknowledgments
+---------------
+
+*   Uks Research Centre for providing the guidelines for the Content Analyzer.
+*   OpenAI for the powerful language model that powers this chatbot.
+*   All contributors who have helped improve this project.
+
+Disclaimer
+----------
+
+This chatbot provides information only and is not a substitute for professional legal or medical advice. For immediate danger, please call emergency services. The content is designed to be culturally sensitive for the Pakistani context, but users should consult local authorities for specific legal guidance.
