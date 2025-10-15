@@ -110,7 +110,7 @@ yarn install</code></pre>
 # or
 
 yarn dev</code></pre>
-<p>Open <a href="http://localhost:3000">http://localhost:3000</a> in your browser to view the application.</p>
+<p>Open <a href="http://localhost:3002">http://localhost:3002</a> in your browser to view the application.</p>
 <h3>Production Build</h3>
 <pre><code class="language-bash">npm run build
 npm start
