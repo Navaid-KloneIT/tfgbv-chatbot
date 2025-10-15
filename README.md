@@ -1,3 +1,24 @@
+The user wants me to create a comprehensive README.md file for their NextJS chatbot application. I'll need to include:
+
+> The user wants me to create a comprehensive README.md file for their NextJS chatbot application. I'll need to include:
+> 
+> 1.  Project title and description
+> 2.  Purpose of the project
+> 3.  Features
+> 4.  How to clone from GitHub
+> 5.  Installation instructions
+> 6.  Environment variables setup
+> 7.  How to run the application
+> 8.  Project structure
+> 9.  Technologies used
+> 10.  How to contribute
+> 11.  License information
+> 12.  Contact/support information
+> 
+> Based on the code provided, this appears to be a chatbot application focused on Technology-Facilitated Gender-Based Violence (TFGBV) support in Pakistan, with two modes: Support Chat and Content Analyzer. It supports multiple languages (English, Urdu, Sindhi) and allows document uploads for analysis.
+> 
+> Let me create a comprehensive README.md file that covers all these aspects.
+
 TFGBV Support Chatbot
 =====================
 
@@ -45,7 +66,7 @@ Features
 
 *   Text analysis for gender sensitivity
 *   Content revision suggestions
-*   Document upload support (`.docx` files)
+*   Document upload support (.docx files)
 *   Structured feedback with explanations
 *   JSON-formatted analysis results
 
@@ -59,33 +80,11 @@ Features
 Technologies Used
 -----------------
 
-Technology
-
-Purpose
-
-**Next.js**
-
-Full-stack React framework
-
-**React**
-
-UI library
-
-**Tailwind CSS**
-
-Utility-first CSS framework
-
-**OpenAI API**
-
-AI-powered chat and analysis backend
-
-**Mammoth.js**
-
-Reading `.docx` file content
-
-**Lucide React**
-
-Icon library
+*   **Frontend**: Next.js, React, Tailwind CSS
+*   **Backend**: Next.js API Routes
+*   **AI Integration**: OpenAI API
+*   **File Processing**: Mammoth.js (for .docx file reading)
+*   **Icons**: Lucide React
 
 Installation
 ------------
@@ -100,69 +99,26 @@ Installation
 
 bash
 
-Line Wrapping
+```git clone https://github.com/your-username/tfgbv-chatbot.git
 
-Collapse
-
-Copy
-
-9
-
-1
-
-2
-
-›
-
-git clone https://github.com/Navaid-KloneIT/tfgbv-chatbot.git
-
-cd tfgbv-chatbot
+cd tfgbv-chatbot```
 
 ### Install Dependencies
 
 bash
 
-Line Wrapping
-
-Collapse
-
-Copy
-
-9
-
-1
-
-2
-
-3
-
-›
-
-npm install
+```npm install
 
 \# or
 
-yarn install
+yarn install ```
 
-Environment Variables
+### Environment Variables
 ---------------------
 
 Create a `.env.local` file in the root of your project and add the following:
 
-env
-
-Line Wrapping
-
-Collapse
-
-Copy
-
-9
-
-1
-
-›
-
+```
 OPENAI\_API\_KEY=your\_openai\_api\_key\_here
 
 To get an OpenAI API key:
@@ -172,61 +128,27 @@ To get an OpenAI API key:
 3.  Navigate to the API section
 4.  Generate a new API key
 5.  Copy the key and add it to your `.env.local` file
-
-Running the Application
+```
+## Running the Application
 -----------------------
 
 ### Development Mode
 
 bash
-
-Line Wrapping
-
-Collapse
-
-Copy
-
-9
-
-1
-
-2
-
-3
-
-›
-
+```
 npm run dev
 
 \# or
 
 yarn dev
-
+```
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
 ### Production Build
 
 bash
 
-Line Wrapping
-
-Collapse
-
-Copy
-
-9
-
-1
-
-2
-
-3
-
-4
-
-5
-
-›
+```
 
 npm run build
 
@@ -237,52 +159,11 @@ npm start
 yarn build
 
 yarn start
-
+```
 Project Structure
 -----------------
 
-Line Wrapping
-
-Collapse
-
-Copy
-
-99
-
-1
-
-2
-
-3
-
-4
-
-5
-
-6
-
-7
-
-8
-
-9
-
-10
-
-11
-
-12
-
-13
-
-14
-
-15
-
-16
-
-›
-
+```
 tfgbv-chatbot/
 
 ├── app/
@@ -314,7 +195,7 @@ tfgbv-chatbot/
 ├── README.md # This file
 
 └── tailwind.config.js # Tailwind CSS configuration
-
+```
 API Endpoints
 -------------
 
@@ -326,43 +207,7 @@ Handles chat requests for both Support and Analyzer modes.
 
 json
 
-Line Wrapping
-
-Collapse
-
-Copy
-
-99
-
-1
-
-2
-
-3
-
-4
-
-5
-
-6
-
-7
-
-8
-
-9
-
-10
-
-11
-
-›
-
-⌄
-
-⌄
-
-⌄
+```
 
 {
 
@@ -382,80 +227,26 @@ Copy
 
 "language": "en",
 
-"mode": "support"
+"mode": "support" // or "analyzer"
 
 }
-
+```
 **Response (Support Mode):**
 
 json
-
-Line Wrapping
-
-Collapse
-
-Copy
-
-9
-
-1
-
-2
-
-3
-
-›
-
-⌄
+```
 
 {
 
 "message": "AI response here"
 
 }
-
+```
 **Response (Analyzer Mode):**
 
 json
 
-Line Wrapping
-
-Collapse
-
-Copy
-
-99
-
-1
-
-2
-
-3
-
-4
-
-5
-
-6
-
-7
-
-8
-
-9
-
-10
-
-11
-
-›
-
-⌄
-
-⌄
-
-⌄
-
+```
 {
 
 "revisedText": "Revised content here",
@@ -477,7 +268,7 @@ Copy
 \]
 
 }
-
+```
 Contributing
 ------------
 
@@ -507,16 +298,16 @@ Support
 
 If you encounter any issues or have questions about the TFGBV Support Chatbot, please:
 
-1.  Check the [Issues](https://github.com/Navaid-KloneIT/tfgbv-chatbot/issues) page to see if your question has already been addressed.
-2.  Create a new issue with detailed information about the problem.
-3.  For security concerns, please email us at `security@example.com`.
+1.  Check the [Issues](https://github.com/your-username/tfgbv-chatbot/issues) page to see if your question has already been addressed
+2.  Create a new issue with detailed information about the problem
+3.  For security concerns, please email us at [security@example.com](mailto:security@example.com)
 
 Acknowledgments
 ---------------
 
-*   Uks Research Centre for providing the guidelines for the Content Analyzer.
-*   OpenAI for the powerful language model that powers this chatbot.
-*   All contributors who have helped improve this project.
+*   Uks Research Centre for providing the guidelines for the Content Analyzer
+*   OpenAI for the powerful language model that powers this chatbot
+*   All contributors who have helped improve this project
 
 Disclaimer
 ----------
