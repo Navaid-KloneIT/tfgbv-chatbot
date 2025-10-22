@@ -1,3 +1,4 @@
+// app/page.tsx
 import TFGBVChatbot from './components/TFGBVChatbot';
 
 export default function Home() {
