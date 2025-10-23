@@ -1,5 +1,5 @@
-1:HL["/_next/static/css/93ebc0a87b1a7660.css","style",{"crossOrigin":""}]
-0:["E7zHn4iUB__lzEEA9RbNg",[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],"$L2",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/93ebc0a87b1a7660.css","precedence":"next","crossOrigin":""}]],"$L3"]]]]
+1:HL["/_next/static/css/b8d00e84f12b4e9c.css","style",{"crossOrigin":""}]
+0:["8w7ivrLZtw4Ivuai8LwH0",[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],"$L2",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/b8d00e84f12b4e9c.css","precedence":"next","crossOrigin":""}]],"$L3"]]]]
 4:I[6954,[],""]
 5:I[7264,[],""]
 7:{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"}

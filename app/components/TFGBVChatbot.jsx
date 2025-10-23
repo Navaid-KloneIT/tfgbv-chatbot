@@ -3,11 +3,10 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, MessageCircle, Shield, Phone, AlertCircle, Globe, Menu, X, FileText, Upload } from 'lucide-react';
-import mammoth from 'mammoth'; // --- ADDED --- for reading docx files
+import mammoth from 'mammoth';
 
 const TFGBVChatbot = () => {
-  // --- START: MODIFIED STATE ---
-  const [mode, setMode] = useState('support'); // 'support' or 'analyzer'
+  const [mode, setMode] = useState('support'); // 'support', 'analyzer', 'bias-detector', 'feminist-lens', 'rewrite-engine'
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -15,16 +14,14 @@ const TFGBVChatbot = () => {
       timestamp: new Date()
     }
   ]);
-  const [analysisResult, setAnalysisResult] = useState(null); // To store results from analyzer mode
-  // --- END: MODIFIED STATE ---
-
+  const [analysisResult, setAnalysisResult] = useState(null);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [language, setLanguage] = useState('en');
   const [showSidebar, setShowSidebar] = useState(false);
   const messagesEndRef = useRef(null);
   const [hasMounted, setHasMounted] = useState(false);
-  const fileInputRef = useRef(null); // --- ADDED --- for file input
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     setHasMounted(true);
@@ -38,31 +35,54 @@ const TFGBVChatbot = () => {
     scrollToBottom();
   }, [messages]);
 
-  // --- ADDED --- Function to handle mode change
   const handleModeChange = (newMode) => {
     setMode(newMode);
-    setMessages([]); // Clear messages when switching modes
-    setAnalysisResult(null); // Clear analysis results
+    setMessages([]);
+    setAnalysisResult(null);
     setInputMessage('');
     if (newMode === 'support') {
-        setMessages([
-             {
-              role: 'assistant',
-              content: 'You are now in Support Chat mode. I am here to provide confidential support and information about TFGBV. How can I help?',
-              timestamp: new Date()
-            }
-        ]);
-    } else {
-        setMessages([
-             {
-              role: 'assistant',
-              content: 'You are now in Content Analyzer mode. Please enter a headline, paste your text, or upload a Word document for review based on Uks\'s feminist and media-sensitive guidelines.',
-              timestamp: new Date()
-            }
-        ]);
+      setMessages([
+        {
+          role: 'assistant',
+          content: 'You are now in Support Chat mode. I am here to provide confidential support and information about TFGBV. How can I help?',
+          timestamp: new Date()
+        }
+      ]);
+    } else if (newMode === 'analyzer') {
+      setMessages([
+        {
+          role: 'assistant',
+          content: 'You are now in Content Analyzer mode. Please enter a headline, paste your text, or upload a Word document for review based on Uks\'s feminist and media-sensitive guidelines.',
+          timestamp: new Date()
+        }
+      ]);
+    } else if (newMode === 'bias-detector') {
+      setMessages([
+        {
+          role: 'assistant',
+          content: 'You are now in Bias Detector mode. Please enter text or upload a Word document to analyze for gender-biased language. I will flag problematic terms and suggest neutral alternatives.',
+          timestamp: new Date()
+        }
+      ]);
+    } else if (newMode === 'feminist-lens') {
+      setMessages([
+        {
+          role: 'assistant',
+          content: 'You are now in Feminist Lens mode. Please enter text or upload a Word document to analyze for representation gaps, such as missing perspectives from women or marginalized groups.',
+          timestamp: new Date()
+        }
+      ]);
+    } else if (newMode === 'rewrite-engine') {
+      setMessages([
+        {
+          role: 'assistant',
+          content: 'You are now in Rewrite Engine mode. Please enter text or upload a Word document (e.g., job ads, posters) to transform exclusionary language into inclusive terms.',
+          timestamp: new Date()
+        }
+      ]);
     }
   };
-  
+
   const emergencyContacts = {
     en: [
       { name: 'National Emergency Helpline', number: '1099' },
@@ -105,31 +125,10 @@ const TFGBVChatbot = () => {
     ]
   };
 
-  const systemPrompt = `You are a compassionate, culturally sensitive AI assistant supporting women experiencing Technology-Facilitated Gender-Based Violence (TFGBV) in Pakistan. Your role is to:
-
-1. Provide accurate information about TFGBV in simple, accessible language
-2. Offer practical guidance on digital safety and reporting mechanisms
-3. Inform survivors about their legal rights under Pakistani law
-4. Direct users to appropriate support services
-5. Maintain a supportive, non-judgmental, and empowering tone
-6. Respect cultural sensitivities of the Sindhi-speaking and broader Pakistani community
-7. Prioritize user safety and confidentiality
-8. Never blame survivors or minimize their experiences
-
-Key information to share:
-- TFGBV includes cyberstalking, non-consensual sharing of images, online harassment, threats, doxxing, and digital abuse
-- Pakistan's Prevention of Electronic Crimes Act (PECA) 2016 provides legal protection
-- Survivors can report to FIA Cyber Crime Wing, local police, or use helplines
-- Digital safety measures: strong passwords, privacy settings, blocking harassers, documenting evidence
-- Available support: Rozan, Uks Research Centre, legal aid organizations, counseling services
-
-Always be empathetic, provide hope, and empower survivors with actionable information.`;
-
-  // --- START: MODIFIED handleSendMessage FUNCTION ---
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
-    
-    setAnalysisResult(null); // Clear previous analysis
+
+    setAnalysisResult(null);
 
     const userMessage = {
       role: 'user',
@@ -150,7 +149,7 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
         body: JSON.stringify({
           messages: [...messages, userMessage],
           language,
-          mode // Pass the current mode to the API
+          mode
         }),
       });
 
@@ -160,12 +159,18 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
 
       const data = await response.json();
 
-      if (mode === 'analyzer' && data.analysis) {
+      if (['analyzer', 'bias-detector', 'feminist-lens', 'rewrite-engine'].includes(mode) && data.analysis) {
         setAnalysisResult(data);
         setMessages(prev => [...prev, {
-            role: 'assistant',
-            content: "Here is the analysis of your text. See the results displayed below the chat.",
-            timestamp: new Date()
+          role: 'assistant',
+          content: mode === 'analyzer'
+            ? "Here is the analysis of your text. See the results displayed below the chat."
+            : mode === 'bias-detector'
+            ? "Here is the bias analysis of your text. Problematic terms have been flagged with neutral alternatives below."
+            : mode === 'feminist-lens'
+            ? "Here is the analysis of representation gaps in your text. Suggestions for inclusivity are provided below."
+            : "Here is the rewritten text with inclusive language. See the changes below.",
+          timestamp: new Date()
         }]);
       } else {
         setMessages(prev => [...prev, {
@@ -185,9 +190,7 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
 
     setIsLoading(false);
   };
-  // --- END: MODIFIED handleSendMessage FUNCTION ---
-  
-  // --- ADDED --- Function to handle file upload
+
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file && (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
@@ -198,31 +201,30 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
           .then(result => {
             setInputMessage(result.value);
             setMessages(prev => [...prev, {
-                role: 'assistant',
-                content: `Document "${file.name}" uploaded successfully. Press 'Send' to analyze.`,
-                timestamp: new Date()
+              role: 'assistant',
+              content: `Document "${file.name}" uploaded successfully. Press 'Send' to analyze.`,
+              timestamp: new Date()
             }]);
           })
           .catch(err => {
             console.error('Error reading docx file:', err);
-             setMessages(prev => [...prev, {
-                role: 'assistant',
-                content: `Sorry, there was an error reading the document.`,
-                timestamp: new Date()
+            setMessages(prev => [...prev, {
+              role: 'assistant',
+              content: `Sorry, there was an error reading the document.`,
+              timestamp: new Date()
             }]);
           });
       };
       reader.readAsArrayBuffer(file);
     } else {
-        setMessages(prev => [...prev, {
-            role: 'assistant',
-            content: `Please upload a valid Word document (.docx).`,
-            timestamp: new Date()
-        }]);
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: `Please upload a valid Word document (.docx).`,
+        timestamp: new Date()
+      }]);
     }
-    event.target.value = null; // Reset file input
+    event.target.value = null;
   };
-
 
   const handleQuickAction = (text) => {
     setInputMessage(text);
@@ -241,6 +243,12 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
         confidential: 'Your conversation is private and confidential',
         analyzerTitle: 'Content Analyzer',
         analyzerSubtitle: 'Review content based on Uks\'s guidelines',
+        biasDetectorTitle: 'Bias Detector',
+        biasDetectorSubtitle: 'Detect and correct gender-biased language',
+        feministLensTitle: 'Feminist Lens',
+        feministLensSubtitle: 'Analyze for representation gaps',
+        rewriteEngineTitle: 'Rewrite Engine',
+        rewriteEngineSubtitle: 'Transform exclusionary language to inclusive',
         typePrompt: 'Enter a headline or paste text...'
       },
       ur: {
@@ -254,6 +262,12 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
         confidential: 'آپ کی گفتگو نجی اور خفیہ ہے',
         analyzerTitle: 'مواد کا تجزیہ کار',
         analyzerSubtitle: 'یوکس کے رہنما اصولوں پر مبنی مواد کا جائزہ لیں',
+        biasDetectorTitle: 'تعصب کا پتہ لگانے والا',
+        biasDetectorSubtitle: 'جنسی تعصب پر مبنی زبان کا پتہ لگائیں اور درست کریں',
+        feministLensTitle: 'فیمنسٹ لینس',
+        feministLensSubtitle: 'نقصانات کی نمائندگی کے لئے تجزیہ کریں',
+        rewriteEngineTitle: 'ری رائٹ انجن',
+        rewriteEngineSubtitle: 'خارج کرنے والی زبان کو شامل کرنے والی زبان میں تبدیل کریں',
         typePrompt: 'ایک سرخی درج کریں یا متن چسپاں کریں...'
       },
       sd: {
@@ -267,29 +281,31 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
         confidential: 'توهان جي ڳالهه ٻولهه خانگي ۽ رازداري آهي',
         analyzerTitle: 'مواد جو تجزيو ڪندڙ',
         analyzerSubtitle: 'Uks جي ھدايتن جي بنياد تي مواد جو جائزو وٺو',
+        biasDetectorTitle: 'تعصب جو پتو لڳائيندڙ',
+        biasDetectorSubtitle: 'جنسي تعصب تي ٻڌل ٻوليءَ جو پتو لڳايو ۽ درست ڪريو',
+        feministLensTitle: 'فيمينسٽ لينس',
+        feministLensSubtitle: 'نمايانگي جي خالن جو تجزيو ڪريو',
+        rewriteEngineTitle: 'ري رائيٽ انجن',
+        rewriteEngineSubtitle: 'خارج ڪندڙ ٻولي کي شامل ڪندڙ ٻولي ۾ تبديل ڪريو',
         typePrompt: 'ھڪڙي عنوان داخل ڪريو يا ٽيڪسٽ پيسٽ ڪريو...'
       }
     };
-
     return translations[language][key] || translations.en[key];
   };
 
   return (
     <div className="flex h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
-      {/* Sidebar */}
       <div className={`${showSidebar ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative w-80 bg-white shadow-xl transition-transform duration-300 ease-in-out z-20 h-full overflow-y-auto`}>
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center space-x-2">
-              <Shield className="text-purple-600" size={28} />
+              <Shield className="text-[#6E529D]" size={28} />
               <h2 className="text-xl font-bold text-gray-800">Resources</h2>
             </div>
             <button onClick={() => setShowSidebar(false)} className="md:hidden">
               <X size={24} />
             </button>
           </div>
-
-          {/* Language Selector */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <Globe className="inline mr-2" size={16} />
@@ -298,18 +314,15 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6E529D] focus:border-transparent"
             >
               <option value="en">English</option>
               <option value="ur">اردو (Urdu)</option>
               <option value="sd">سنڌي (Sindhi)</option>
             </select>
           </div>
-            
-          {/* --- RENDER SIDEBAR CONTENT BASED ON MODE --- */}
           {mode === 'support' ? (
             <>
-              {/* Emergency Contacts */}
               <div className="mb-6">
                 <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
                   <Phone className="mr-2 text-red-600" size={20} />
@@ -324,8 +337,6 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
                   ))}
                 </div>
               </div>
-
-              {/* Quick Actions */}
               <div className="mb-6">
                 <h3 className="font-semibold text-gray-800 mb-3">{getTranslation('quickActions')}</h3>
                 <div className="space-y-2">
@@ -335,9 +346,9 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
                       <button
                         key={index}
                         onClick={() => handleQuickAction(action.text)}
-                        className="w-full text-left px-4 py-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors flex items-center space-x-3"
+                        className="w-full text-left px-4 py-3 bg-[#6E529D]/10 hover:bg-[#6E529D]/20 rounded-lg transition-colors flex items-center space-x-3"
                       >
-                        <Icon size={18} className="text-purple-600" />
+                        <Icon size={18} className="text-[#6E529D]" />
                         <span className="text-sm text-gray-700">{action.text}</span>
                       </button>
                     );
@@ -345,68 +356,114 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
                 </div>
               </div>
             </>
+          ) : mode === 'analyzer' ? (
+            <div className="bg-[#6E529D]/10 border border-[#6E529D]/20 rounded-lg p-4">
+              <h3 className="font-semibold text-gray-800 mb-2">About Content Analyzer</h3>
+              <p className="text-xs text-gray-600">
+                This tool helps journalists and content creators by:
+                <br/>• Generating content from headlines.
+                <br/>• Revising text based on feminist and gender-sensitive principles.
+                <br/>• Highlighting grammatical and stylistic issues.
+              </p>
+            </div>
+          ) : mode === 'bias-detector' ? (
+            <div className="bg-[#6E529D]/10 border border-[#6E529D]/20 rounded-lg p-4">
+              <h3 className="font-semibold text-gray-800 mb-2">About Bias Detector</h3>
+              <p className="text-xs text-gray-600">
+                This tool identifies gender-biased language in text, such as terms like ‘emotional’ or ‘ambitious’ when used for female leaders, and suggests neutral alternatives like ‘expressive’ or ‘determined’ based on Uks’ 30-year archive of Pakistani journalism.
+              </p>
+            </div>
+          ) : mode === 'feminist-lens' ? (
+            <div className="bg-[#6E529D]/10 border border-[#6E529D]/20 rounded-lg p-4">
+              <h3 className="font-semibold text-gray-800 mb-2">About Feminist Lens</h3>
+              <p className="text-xs text-gray-600">
+                This tool scans content for representation gaps, such as missing perspectives from women or marginalized groups, and suggests inclusive additions based on Uks’ Gynae Feminism project.
+              </p>
+            </div>
           ) : (
-             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-800 mb-2">About Content Analyzer</h3>
-                <p className="text-xs text-gray-600">
-                    This tool helps journalists and content creators by:
-                    <br/>• Generating content from headlines.
-                    <br/>• Revising text based on feminist and gender-sensitive principles.
-                    <br/>• Highlighting grammatical and stylistic issues.
-                </p>
+            <div className="bg-[#6E529D]/10 border border-[#6E529D]/20 rounded-lg p-4">
+              <h3 className="font-semibold text-gray-800 mb-2">About Rewrite Engine</h3>
+              <p className="text-xs text-gray-600">
+                This tool transforms exclusionary language in job ads or posters into inclusive terms, such as changing ‘salesman’ to ‘salesperson’ or ‘hygienic Muslim girls’ to ‘health-conscious youth.’
+              </p>
             </div>
           )}
-
-          {/* Disclaimer */}
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
+          <div className="bg-[#F6A317]/10 border border-[#F6A317]/20 rounded-lg p-4 mt-6">
             <p className="text-xs text-gray-600">
               {getTranslation('disclaimer')}
             </p>
           </div>
         </div>
       </div>
-
-      {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
         <div className="bg-white shadow-md px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <button onClick={() => setShowSidebar(true)} className="md:hidden">
                 <Menu size={24} />
               </button>
-              {/* --- DYNAMIC HEADER --- */}
               {mode === 'support' ? (
-                <MessageCircle className="text-purple-600" size={32} />
+                <MessageCircle className="text-[#6E529D]" size={32} />
+              ) : mode === 'analyzer' ? (
+                <FileText className="text-[#6E529D]" size={32} />
+              ) : mode === 'bias-detector' ? (
+                <AlertCircle className="text-[#6E529D]" size={32} />
+              ) : mode === 'feminist-lens' ? (
+                <Shield className="text-[#6E529D]" size={32} />
               ) : (
-                <FileText className="text-blue-600" size={32} />
+                <FileText className="text-[#6E529D]" size={32} />
               )}
               <div>
                 <h1 className="text-2xl font-bold text-gray-800">
-                    {mode === 'support' ? getTranslation('title') : getTranslation('analyzerTitle')}
+                  {mode === 'support' ? getTranslation('title') :
+                   mode === 'analyzer' ? getTranslation('analyzerTitle') :
+                   mode === 'bias-detector' ? getTranslation('biasDetectorTitle') :
+                   mode === 'feminist-lens' ? getTranslation('feministLensTitle') :
+                   getTranslation('rewriteEngineTitle')}
                 </h1>
                 <p className="text-sm text-gray-600">
-                    {mode === 'support' ? getTranslation('subtitle') : getTranslation('analyzerSubtitle')}
+                  {mode === 'support' ? getTranslation('subtitle') :
+                   mode === 'analyzer' ? getTranslation('analyzerSubtitle') :
+                   mode === 'bias-detector' ? getTranslation('biasDetectorSubtitle') :
+                   mode === 'feminist-lens' ? getTranslation('feministLensSubtitle') :
+                   getTranslation('rewriteEngineSubtitle')}
                 </p>
               </div>
             </div>
-             {/* --- ADDED MODE SWITCHER --- */}
             <div className="flex items-center p-1 bg-gray-200 rounded-lg">
-                <button 
-                    onClick={() => handleModeChange('support')}
-                    className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'support' ? 'bg-purple-600 text-white' : 'text-gray-600'}`}>
-                    Support
-                </button>
-                <button 
-                    onClick={() => handleModeChange('analyzer')}
-                    className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'analyzer' ? 'bg-blue-600 text-white' : 'text-gray-600'}`}>
-                    Analyzer
-                </button>
+              <button
+                onClick={() => handleModeChange('support')}
+                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'support' ? 'bg-[#6E529D] text-white' : 'text-gray-600'}`}
+              >
+                Support
+              </button>
+              <button
+                onClick={() => handleModeChange('analyzer')}
+                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'analyzer' ? 'bg-[#6E529D] text-white' : 'text-gray-600'}`}
+              >
+                Analyzer
+              </button>
+              <button
+                onClick={() => handleModeChange('bias-detector')}
+                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'bias-detector' ? 'bg-[#6E529D] text-white' : 'text-gray-600'}`}
+              >
+                Bias Detector
+              </button>
+              <button
+                onClick={() => handleModeChange('feminist-lens')}
+                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'feminist-lens' ? 'bg-[#6E529D] text-white' : 'text-gray-600'}`}
+              >
+                Feminist Lens
+              </button>
+              <button
+                onClick={() => handleModeChange('rewrite-engine')}
+                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'rewrite-engine' ? 'bg-[#6E529D] text-white' : 'text-gray-600'}`}
+              >
+                Rewrite Engine
+              </button>
             </div>
           </div>
         </div>
-
-        {/* Messages and Analysis Area */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
           {messages.map((message, index) => (
             <div
@@ -416,7 +473,7 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
               <div
                 className={`max-w-2xl px-4 py-3 rounded-lg shadow-md ${
                   message.role === 'user'
-                    ? 'bg-purple-600 text-white'
+                    ? 'bg-[#6E529D] text-white'
                     : 'bg-white text-gray-800'
                 }`}
               >
@@ -433,49 +490,50 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
             <div className="flex justify-start">
               <div className="bg-white shadow-md px-4 py-3 rounded-lg">
                 <div className="flex space-x-2">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                  <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                  <div className="w-2 h-2 bg-[#6E529D] rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-[#6E529D] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-2 h-2 bg-[#6E529D] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
                 </div>
               </div>
             </div>
           )}
-          
-           {/* --- ADDED: Analysis Result Display --- */}
           {analysisResult && (
             <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                <h2 className="text-xl font-bold text-gray-800 mb-4">Analysis Complete</h2>
-                <div className="space-y-6">
-                    <div>
-                        <h3 className="font-semibold text-lg text-blue-600 mb-2">Revised Content</h3>
-                        <div className="bg-gray-50 p-4 rounded-md whitespace-pre-wrap text-gray-700">
-                            {analysisResult.revisedText}
-                        </div>
-                    </div>
-                    <div>
-                        <h3 className="font-semibold text-lg text-blue-600 mb-2">Issues and Suggestions</h3>
-                        {analysisResult.analysis.length > 0 ? (
-                            <div className="space-y-4">
-                                {analysisResult.analysis.map((item, index) => (
-                                    <div key={index} className="border-l-4 p-4 rounded-r-lg" style={{borderColor: item.issueType === 'Tone' ? '#FBBF24' : item.issueType === 'Gender-Sensitivity' ? '#F472B6' : '#60A5FA'}}>
-                                        <p className="font-semibold text-gray-800">Original Snippet: <span className="font-normal italic text-red-600">"{item.originalSnippet}"</span></p>
-                                        <p className="text-sm mt-2"><strong className="text-gray-700">Issue Type:</strong> {item.issueType}</p>
-                                        <p className="text-sm mt-1"><strong className="text-gray-700">Explanation:</strong> {item.explanation}</p>
-                                        <p className="text-sm mt-1"><strong className="text-gray-700">Suggestion:</strong> {item.suggestion}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-gray-600">No specific issues found. The text aligns well with the guidelines.</p>
-                        )}
-                    </div>
+              <h2 className="text-xl font-bold text-gray-800 mb-4">
+                {mode === 'analyzer' ? 'Analysis Complete' :
+                 mode === 'bias-detector' ? 'Bias Detection Complete' :
+                 mode === 'feminist-lens' ? 'Feminist Lens Analysis Complete' :
+                 'Rewrite Complete'}
+              </h2>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-semibold text-lg text-[#6E529D] mb-2">Revised Content</h3>
+                  <div className="bg-gray-50 p-4 rounded-md whitespace-pre-wrap text-gray-700">
+                    {analysisResult.revisedText}
+                  </div>
                 </div>
+                <div>
+                  <h3 className="font-semibold text-lg text-[#6E529D] mb-2">Issues and Suggestions</h3>
+                  {analysisResult.analysis.length > 0 ? (
+                    <div className="space-y-4">
+                      {analysisResult.analysis.map((item, index) => (
+                        <div key={index} className="border-l-4 p-4 rounded-r-lg" style={{ borderColor: item.issueType === 'Tone' ? '#F6A317' : item.issueType === 'Gender-Sensitivity' ? '#F472B6' : item.issueType === 'Bias' ? '#10B981' : item.issueType === 'Representation' ? '#EF4444' : item.issueType === 'Inclusivity' ? '#8B5CF6' : '#60A5FA' }}>
+                          <p className="font-semibold text-gray-800">Original Snippet: <span className="font-normal italic text-red-600">"{item.originalSnippet}"</span></p>
+                          <p className="text-sm mt-2"><strong className="text-gray-700">Issue Type:</strong> {item.issueType}</p>
+                          <p className="text-sm mt-1"><strong className="text-gray-700">Explanation:</strong> {item.explanation}</p>
+                          <p className="text-sm mt-1"><strong className="text-gray-700">Suggestion:</strong> {item.suggestion}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-600">No specific issues found. The text aligns well with the guidelines.</p>
+                  )}
+                </div>
+              </div>
             </div>
           )}
           <div ref={messagesEndRef} />
         </div>
-
-        {/* Input */}
         <div className="bg-white border-t px-6 py-4">
           <div className="flex space-x-4">
             <input
@@ -484,27 +542,26 @@ Always be empathetic, provide hope, and empower survivors with actionable inform
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder={mode === 'support' ? getTranslation('typeMessage') : getTranslation('typePrompt')}
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6E529D] focus:border-transparent"
               disabled={isLoading}
             />
-            {/* --- ADDED: UPLOAD BUTTON FOR ANALYZER MODE --- */}
-            {mode === 'analyzer' && (
-                <>
-                    <input type="file" ref={fileInputRef} onChange={handleFileUpload} accept=".docx" style={{ display: 'none' }} />
-                    <button
-                        onClick={() => fileInputRef.current.click()}
-                        disabled={isLoading}
-                        className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:bg-gray-100 transition-colors flex items-center space-x-2"
-                    >
-                       <Upload size={20} />
-                       <span className="hidden sm:inline">Upload</span>
-                    </button>
-                </>
+            {['analyzer', 'bias-detector', 'feminist-lens', 'rewrite-engine'].includes(mode) && (
+              <>
+                <input type="file" ref={fileInputRef} onChange={handleFileUpload} accept=".docx" style={{ display: 'none' }} />
+                <button
+                  onClick={() => fileInputRef.current.click()}
+                  disabled={isLoading}
+                  className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:bg-gray-100 transition-colors flex items-center space-x-2"
+                >
+                  <Upload size={20} />
+                  <span className="hidden sm:inline">Upload</span>
+                </button>
+              </>
             )}
             <button
               onClick={handleSendMessage}
               disabled={isLoading || !inputMessage.trim()}
-              className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
+              className="px-6 py-3 bg-[#6E529D] text-white rounded-lg hover:bg-[#5A3F7F] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
             >
               <Send size={20} />
               <span className="hidden sm:inline">Send</span>
