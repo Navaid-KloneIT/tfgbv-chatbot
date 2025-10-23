@@ -233,7 +233,7 @@ const TFGBVChatbot = () => {
   const getTranslation = (key) => {
     const translations = {
       en: {
-        title: 'TFGBV Support Chatbot',
+        title: 'UKS-Platform',
         subtitle: 'Confidential Support & Information',
         emergency: 'Emergency Contacts',
         quickActions: 'Quick Actions',
@@ -294,27 +294,27 @@ const TFGBVChatbot = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+    <div className="flex h-screen bg-gradient-to-br from-primary/10 via-secondary/10 to-primary/20">
       <div className={`${showSidebar ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative w-80 bg-white shadow-xl transition-transform duration-300 ease-in-out z-20 h-full overflow-y-auto`}>
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center space-x-2">
-              <Shield className="text-[#6E529D]" size={28} />
-              <h2 className="text-xl font-bold text-gray-800">Resources</h2>
+              <Shield className="text-primary" size={28} />
+              <h2 className="text-xl font-bold text-secondary">Resources</h2>
             </div>
             <button onClick={() => setShowSidebar(false)} className="md:hidden">
-              <X size={24} />
+              <X size={24} className="text-primary" />
             </button>
           </div>
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              <Globe className="inline mr-2" size={16} />
+            <label className="block text-sm font-medium text-secondary mb-2">
+              <Globe className="inline mr-2 text-primary" size={16} />
               {getTranslation('language')}
             </label>
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6E529D] focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-primary"
             >
               <option value="en">English</option>
               <option value="ur">اردو (Urdu)</option>
@@ -324,21 +324,21 @@ const TFGBVChatbot = () => {
           {mode === 'support' ? (
             <>
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
-                  <Phone className="mr-2 text-red-600" size={20} />
+                <h3 className="font-semibold text-secondary mb-3 flex items-center">
+                  <Phone className="mr-2 text-primary" size={20} />
                   {getTranslation('emergency')}
                 </h3>
                 <div className="space-y-2">
                   {emergencyContacts[language].map((contact, index) => (
-                    <div key={index} className="bg-red-50 p-3 rounded-lg border border-red-200">
-                      <p className="text-sm font-medium text-gray-800">{contact.name}</p>
-                      <p className="text-lg font-bold text-red-600">{contact.number}</p>
+                    <div key={index} className="bg-secondary/10 p-3 rounded-lg border border-secondary/20">
+                      <p className="text-sm font-medium text-primary">{contact.name}</p>
+                      <p className="text-lg font-bold text-primary">{contact.number}</p>
                     </div>
                   ))}
                 </div>
               </div>
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-800 mb-3">{getTranslation('quickActions')}</h3>
+                <h3 className="font-semibold text-secondary mb-3">{getTranslation('quickActions')}</h3>
                 <div className="space-y-2">
                   {quickActions[language].map((action, index) => {
                     const Icon = action.icon;
@@ -346,10 +346,10 @@ const TFGBVChatbot = () => {
                       <button
                         key={index}
                         onClick={() => handleQuickAction(action.text)}
-                        className="w-full text-left px-4 py-3 bg-[#6E529D]/10 hover:bg-[#6E529D]/20 rounded-lg transition-colors flex items-center space-x-3"
+                        className="w-full text-left px-4 py-3 bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors flex items-center space-x-3"
                       >
-                        <Icon size={18} className="text-[#6E529D]" />
-                        <span className="text-sm text-gray-700">{action.text}</span>
+                        <Icon size={18} className="text-primary" />
+                        <span className="text-sm text-primary">{action.text}</span>
                       </button>
                     );
                   })}
@@ -357,9 +357,9 @@ const TFGBVChatbot = () => {
               </div>
             </>
           ) : mode === 'analyzer' ? (
-            <div className="bg-[#6E529D]/10 border border-[#6E529D]/20 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-800 mb-2">About Content Analyzer</h3>
-              <p className="text-xs text-gray-600">
+            <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+              <h3 className="font-semibold text-secondary mb-2">About Content Analyzer</h3>
+              <p className="text-xs text-primary">
                 This tool helps journalists and content creators by:
                 <br/>• Generating content from headlines.
                 <br/>• Revising text based on feminist and gender-sensitive principles.
@@ -367,29 +367,29 @@ const TFGBVChatbot = () => {
               </p>
             </div>
           ) : mode === 'bias-detector' ? (
-            <div className="bg-[#6E529D]/10 border border-[#6E529D]/20 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-800 mb-2">About Bias Detector</h3>
-              <p className="text-xs text-gray-600">
-                This tool identifies gender-biased language in text, such as terms like ‘emotional’ or ‘ambitious’ when used for female leaders, and suggests neutral alternatives like ‘expressive’ or ‘determined’ based on Uks’ 30-year archive of Pakistani journalism.
+            <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+              <h3 className="font-semibold text-secondary mb-2">About Bias Detector</h3>
+              <p className="text-xs text-primary">
+                This tool identifies gender-biased language in text, such as terms like 'emotional' or 'ambitious' when used for female leaders, and suggests neutral alternatives like 'expressive' or 'determined' based on Uks' 30-year archive of Pakistani journalism.
               </p>
             </div>
           ) : mode === 'feminist-lens' ? (
-            <div className="bg-[#6E529D]/10 border border-[#6E529D]/20 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-800 mb-2">About Feminist Lens</h3>
-              <p className="text-xs text-gray-600">
-                This tool scans content for representation gaps, such as missing perspectives from women or marginalized groups, and suggests inclusive additions based on Uks’ Gynae Feminism project.
+            <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+              <h3 className="font-semibold text-secondary mb-2">About Feminist Lens</h3>
+              <p className="text-xs text-primary">
+                This tool scans content for representation gaps, such as missing perspectives from women or marginalized groups, and suggests inclusive additions based on Uks' Gynae Feminism project.
               </p>
             </div>
           ) : (
-            <div className="bg-[#6E529D]/10 border border-[#6E529D]/20 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-800 mb-2">About Rewrite Engine</h3>
-              <p className="text-xs text-gray-600">
-                This tool transforms exclusionary language in job ads or posters into inclusive terms, such as changing ‘salesman’ to ‘salesperson’ or ‘hygienic Muslim girls’ to ‘health-conscious youth.’
+            <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+              <h3 className="font-semibold text-secondary mb-2">About Rewrite Engine</h3>
+              <p className="text-xs text-primary">
+                This tool transforms exclusionary language in job ads or posters into inclusive terms, such as changing 'salesman' to 'salesperson' or 'hygienic Muslim girls' to 'health-conscious youth.'
               </p>
             </div>
           )}
-          <div className="bg-[#F6A317]/10 border border-[#F6A317]/20 rounded-lg p-4 mt-6">
-            <p className="text-xs text-gray-600">
+          <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-4 mt-6">
+            <p className="text-xs text-primary">
               {getTranslation('disclaimer')}
             </p>
           </div>
@@ -400,28 +400,28 @@ const TFGBVChatbot = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <button onClick={() => setShowSidebar(true)} className="md:hidden">
-                <Menu size={24} />
+                <Menu size={24} className="text-primary" />
               </button>
               {mode === 'support' ? (
-                <MessageCircle className="text-[#6E529D]" size={32} />
+                <MessageCircle className="text-primary" size={32} />
               ) : mode === 'analyzer' ? (
-                <FileText className="text-[#6E529D]" size={32} />
+                <FileText className="text-primary" size={32} />
               ) : mode === 'bias-detector' ? (
-                <AlertCircle className="text-[#6E529D]" size={32} />
+                <AlertCircle className="text-primary" size={32} />
               ) : mode === 'feminist-lens' ? (
-                <Shield className="text-[#6E529D]" size={32} />
+                <Shield className="text-primary" size={32} />
               ) : (
-                <FileText className="text-[#6E529D]" size={32} />
+                <FileText className="text-primary" size={32} />
               )}
               <div>
-                <h1 className="text-2xl font-bold text-gray-800">
+                <h1 className="text-2xl font-bold text-secondary">
                   {mode === 'support' ? getTranslation('title') :
                    mode === 'analyzer' ? getTranslation('analyzerTitle') :
                    mode === 'bias-detector' ? getTranslation('biasDetectorTitle') :
                    mode === 'feminist-lens' ? getTranslation('feministLensTitle') :
                    getTranslation('rewriteEngineTitle')}
                 </h1>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-primary">
                   {mode === 'support' ? getTranslation('subtitle') :
                    mode === 'analyzer' ? getTranslation('analyzerSubtitle') :
                    mode === 'bias-detector' ? getTranslation('biasDetectorSubtitle') :
@@ -433,31 +433,31 @@ const TFGBVChatbot = () => {
             <div className="flex items-center p-1 bg-gray-200 rounded-lg">
               <button
                 onClick={() => handleModeChange('support')}
-                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'support' ? 'bg-[#6E529D] text-white' : 'text-gray-600'}`}
+                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'support' ? 'bg-primary text-white' : 'text-primary'}`}
               >
                 Support
               </button>
               <button
                 onClick={() => handleModeChange('analyzer')}
-                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'analyzer' ? 'bg-[#6E529D] text-white' : 'text-gray-600'}`}
+                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'analyzer' ? 'bg-primary text-white' : 'text-primary'}`}
               >
                 Analyzer
               </button>
               <button
                 onClick={() => handleModeChange('bias-detector')}
-                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'bias-detector' ? 'bg-[#6E529D] text-white' : 'text-gray-600'}`}
+                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'bias-detector' ? 'bg-primary text-white' : 'text-primary'}`}
               >
                 Bias Detector
               </button>
               <button
                 onClick={() => handleModeChange('feminist-lens')}
-                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'feminist-lens' ? 'bg-[#6E529D] text-white' : 'text-gray-600'}`}
+                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'feminist-lens' ? 'bg-primary text-white' : 'text-primary'}`}
               >
                 Feminist Lens
               </button>
               <button
                 onClick={() => handleModeChange('rewrite-engine')}
-                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'rewrite-engine' ? 'bg-[#6E529D] text-white' : 'text-gray-600'}`}
+                className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${mode === 'rewrite-engine' ? 'bg-primary text-white' : 'text-primary'}`}
               >
                 Rewrite Engine
               </button>
@@ -473,8 +473,8 @@ const TFGBVChatbot = () => {
               <div
                 className={`max-w-2xl px-4 py-3 rounded-lg shadow-md ${
                   message.role === 'user'
-                    ? 'bg-[#6E529D] text-white'
-                    : 'bg-white text-gray-800'
+                    ? 'bg-primary text-white'
+                    : 'bg-white text-primary'
                 }`}
               >
                 <p className="whitespace-pre-wrap">{message.content}</p>
@@ -490,16 +490,16 @@ const TFGBVChatbot = () => {
             <div className="flex justify-start">
               <div className="bg-white shadow-md px-4 py-3 rounded-lg">
                 <div className="flex space-x-2">
-                  <div className="w-2 h-2 bg-[#6E529D] rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-[#6E529D] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                  <div className="w-2 h-2 bg-[#6E529D] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
                 </div>
               </div>
             </div>
           )}
           {analysisResult && (
             <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">
+              <h2 className="text-xl font-bold text-secondary mb-4">
                 {mode === 'analyzer' ? 'Analysis Complete' :
                  mode === 'bias-detector' ? 'Bias Detection Complete' :
                  mode === 'feminist-lens' ? 'Feminist Lens Analysis Complete' :
@@ -507,26 +507,26 @@ const TFGBVChatbot = () => {
               </h2>
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-semibold text-lg text-[#6E529D] mb-2">Revised Content</h3>
-                  <div className="bg-gray-50 p-4 rounded-md whitespace-pre-wrap text-gray-700">
+                  <h3 className="font-semibold text-lg text-secondary mb-2">Revised Content</h3>
+                  <div className="bg-gray-50 p-4 rounded-md whitespace-pre-wrap text-primary">
                     {analysisResult.revisedText}
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-lg text-[#6E529D] mb-2">Issues and Suggestions</h3>
+                  <h3 className="font-semibold text-lg text-secondary mb-2">Issues and Suggestions</h3>
                   {analysisResult.analysis.length > 0 ? (
                     <div className="space-y-4">
                       {analysisResult.analysis.map((item, index) => (
                         <div key={index} className="border-l-4 p-4 rounded-r-lg" style={{ borderColor: item.issueType === 'Tone' ? '#F6A317' : item.issueType === 'Gender-Sensitivity' ? '#F472B6' : item.issueType === 'Bias' ? '#10B981' : item.issueType === 'Representation' ? '#EF4444' : item.issueType === 'Inclusivity' ? '#8B5CF6' : '#60A5FA' }}>
-                          <p className="font-semibold text-gray-800">Original Snippet: <span className="font-normal italic text-red-600">"{item.originalSnippet}"</span></p>
-                          <p className="text-sm mt-2"><strong className="text-gray-700">Issue Type:</strong> {item.issueType}</p>
-                          <p className="text-sm mt-1"><strong className="text-gray-700">Explanation:</strong> {item.explanation}</p>
-                          <p className="text-sm mt-1"><strong className="text-gray-700">Suggestion:</strong> {item.suggestion}</p>
+                          <p className="font-semibold text-primary">Original Snippet: <span className="font-normal italic text-red-600">"{item.originalSnippet}"</span></p>
+                          <p className="text-sm mt-2"><strong className="text-primary">Issue Type:</strong> {item.issueType}</p>
+                          <p className="text-sm mt-1"><strong className="text-primary">Explanation:</strong> {item.explanation}</p>
+                          <p className="text-sm mt-1"><strong className="text-primary">Suggestion:</strong> {item.suggestion}</p>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-gray-600">No specific issues found. The text aligns well with the guidelines.</p>
+                    <p className="text-primary">No specific issues found. The text aligns well with the guidelines.</p>
                   )}
                 </div>
               </div>
@@ -542,7 +542,7 @@ const TFGBVChatbot = () => {
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder={mode === 'support' ? getTranslation('typeMessage') : getTranslation('typePrompt')}
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6E529D] focus:border-transparent"
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-primary"
               disabled={isLoading}
             />
             {['analyzer', 'bias-detector', 'feminist-lens', 'rewrite-engine'].includes(mode) && (
@@ -551,19 +551,19 @@ const TFGBVChatbot = () => {
                 <button
                   onClick={() => fileInputRef.current.click()}
                   disabled={isLoading}
-                  className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:bg-gray-100 transition-colors flex items-center space-x-2"
+                  className="px-4 py-3 bg-gray-200 text-primary rounded-lg hover:bg-gray-300 disabled:bg-gray-100 transition-colors flex items-center space-x-2"
                 >
-                  <Upload size={20} />
-                  <span className="hidden sm:inline">Upload</span>
+                  <Upload size={20} className="text-primary" />
+                  <span className="hidden sm:inline text-primary">Upload</span>
                 </button>
               </>
             )}
             <button
               onClick={handleSendMessage}
               disabled={isLoading || !inputMessage.trim()}
-              className="px-6 py-3 bg-[#6E529D] text-white rounded-lg hover:bg-[#5A3F7F] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
+              className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
             >
-              <Send size={20} />
+              <Send size={20} className="text-white" />
               <span className="hidden sm:inline">Send</span>
             </button>
           </div>
