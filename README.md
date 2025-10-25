@@ -15,11 +15,11 @@
 <li>License information</li>
 <li>Contact/support information</li>
 </ol>
-<p>Based on the code provided, this appears to be a chatbot application focused on Technology-Facilitated Gender-Based Violence (TFGBV) support in Pakistan, with two modes: Support Chat and Content Analyzer. It supports multiple languages (English, Urdu, Sindhi) and allows document uploads for analysis.</p>
+<p>Based on the code provided, this appears to be a chatbot application focused on Technology-Facilitated Gender-Based Violence (UKS-Platform) support in Pakistan, with two modes: Support Chat and Content Analyzer. It supports multiple languages (English, Urdu, Sindhi) and allows document uploads for analysis.</p>
 <p>Let me create a comprehensive README.md file that covers all these aspects.</p>
 </blockquote>
-<h1>TFGBV Support Chatbot</h1>
-<p>A comprehensive NextJS chatbot application designed to provide confidential support and information about Technology-Facilitated Gender-Based Violence (TFGBV) in Pakistan. The application features two modes: a Support Chat for survivors and a Content Analyzer for journalists and content creators.</p>
+<h1>UKS-Platform Support Chatbot</h1>
+<p>A comprehensive NextJS chatbot application designed to provide confidential support and information about Technology-Facilitated Gender-Based Violence (UKS-Platform) in Pakistan. The application features two modes: a Support Chat for survivors and a Content Analyzer for journalists and content creators.</p>
 <h2>Table of Contents</h2>
 <ul>
 <li><a href="#purpose">Purpose</a></li>
@@ -37,7 +37,7 @@
 <h2>Purpose</h2>
 <p>This chatbot serves two primary purposes:</p>
 <ol>
-<li><p><strong>Support Chat Mode</strong>: Provides confidential support, information, and resources for women experiencing Technology-Facilitated Gender-Based Violence (TFGBV) in Pakistan. It offers guidance on digital safety, legal rights, reporting mechanisms, and available support services.</p>
+<li><p><strong>Support Chat Mode</strong>: Provides confidential support, information, and resources for women experiencing Technology-Facilitated Gender-Based Violence (UKS-Platform) in Pakistan. It offers guidance on digital safety, legal rights, reporting mechanisms, and available support services.</p>
 </li>
 <li><p><strong>Content Analyzer Mode</strong>: Assists journalists and content creators in reviewing and improving their content based on feminist, gender-sensitive, and media-sensitive parameters developed by Uks Research Centre.</p>
 </li>
@@ -84,8 +84,8 @@
 <li>OpenAI API key</li>
 </ul>
 <h3>Clone from GitHub</h3>
-<pre><code class="language-bash">git clone https://github.com/your-username/tfgbv-chatbot.git
-cd tfgbv-chatbot</code></pre>
+<pre><code class="language-bash">git clone https://github.com/your-username/UKS-Platform-chatbot.git
+cd UKS-Platform-chatbot</code></pre>
 <h3>Install Dependencies</h3>
 <pre><code class="language-bash">npm install
 
@@ -120,13 +120,13 @@ npm start
 yarn build
 yarn start</code></pre>
 <h2>Project Structure</h2>
-<pre><code>tfgbv-chatbot/
+<pre><code>UKS-Platform-chatbot/
 ├── app/
 │   ├── api/
 │   │   └── chat/
 │   │       └── route.js # API endpoint for chat functionality
 │   ├── components/
-│   │   └── TFGBVChatbot.jsx # Main chatbot component
+│   │   └── UKS-PlatformChatbot.jsx # Main chatbot component
 │   ├── globals.css # Global styles
 │   ├── layout.js # Root layout component
 │   └── page.js # Home page component
@@ -168,7 +168,7 @@ yarn start</code></pre>
   ]
 }</code></pre>
 <h2>Contributing</h2>
-<p>We welcome contributions to improve the TFGBV Support Chatbot. Please follow these steps:</p>
+<p>We welcome contributions to improve the UKS-Platform Support Chatbot. Please follow these steps:</p>
 <ol>
 <li>Fork the repository</li>
 <li>Create a new branch (<code>git checkout -b feature/amazing-feature</code>)</li>
@@ -187,9 +187,9 @@ yarn start</code></pre>
 <h2>License</h2>
 <p>This project is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</p>
 <h2>Support</h2>
-<p>If you encounter any issues or have questions about the TFGBV Support Chatbot, please:</p>
+<p>If you encounter any issues or have questions about the UKS-Platform Support Chatbot, please:</p>
 <ol>
-<li>Check the <a href="https://github.com/your-username/tfgbv-chatbot/issues">Issues</a> page to see if your question has already been addressed</li>
+<li>Check the <a href="https://github.com/your-username/UKS-Platform-chatbot/issues">Issues</a> page to see if your question has already been addressed</li>
 <li>Create a new issue with detailed information about the problem</li>
 <li>For security concerns, please email us at <a href="mailto:security@example.com">security@example.com</a></li>
 </ol>

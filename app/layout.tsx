@@ -3,7 +3,7 @@ import './globals.css';
 import { ReactNode } from 'react';
 
 export const metadata = {
-  title: 'TFGBV Support Chatbot - Uks Research Centre',
+  title: 'UKS-Platform - Uks Research Centre',
   description: 'Confidential support and information for women experiencing Technology-Facilitated Gender-Based Violence',
 };
 
