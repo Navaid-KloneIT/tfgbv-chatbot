@@ -10,7 +10,7 @@ const TFGBVChatbot = () => {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: 'السلام علیکم / आदाब / Hello! I am here to provide you with confidential support and information about Technology-Facilitated Gender-Based Violence (TFGBV). You can ask me about:\n\n• What is TFGBV?\n• How to stay safe online\n• Where to report abuse\n• Your legal rights\n• Support services available\n\nHow can I help you today?',
+      content: 'السلام علیکم / आदाब / Hello! I am here to provide you with confidential support and information about Technology-Facilitated Gender-Based Violence (UKS-Platform). You can ask me about:\n\n• What is UKS-Platform?\n• How to stay safe online\n• Where to report abuse\n• Your legal rights\n• Support services available\n\nHow can I help you today?',
       timestamp: new Date()
     }
   ]);
@@ -44,7 +44,7 @@ const TFGBVChatbot = () => {
       setMessages([
         {
           role: 'assistant',
-          content: 'You are now in Support Chat mode. I am here to provide confidential support and information about TFGBV. How can I help?',
+          content: 'You are now in Support Chat mode. I am here to provide confidential support and information about UKS-Platform. How can I help?',
           timestamp: new Date()
         }
       ]);
@@ -106,19 +106,19 @@ const TFGBVChatbot = () => {
 
   const quickActions = {
     en: [
-      { text: 'What is TFGBV?', icon: AlertCircle },
+      { text: 'What is UKS-Platform?', icon: AlertCircle },
       { text: 'How to stay safe online', icon: Shield },
       { text: 'Where to report abuse', icon: Phone },
       { text: 'My legal rights', icon: MessageCircle }
     ],
     ur: [
-      { text: 'TFGBV کیا ہے؟', icon: AlertCircle },
+      { text: 'UKS-Platform کیا ہے؟', icon: AlertCircle },
       { text: 'آن لائن محفوظ کیسے رہیں', icon: Shield },
       { text: 'بدسلوکی کی رپورٹ کہاں کریں', icon: Phone },
       { text: 'میرے قانونی حقوق', icon: MessageCircle }
     ],
     sd: [
-      { text: 'TFGBV ڇا آهي؟', icon: AlertCircle },
+      { text: 'UKS-Platform ڇا آهي؟', icon: AlertCircle },
       { text: 'آن لائن محفوظ ڪيئن رهجو', icon: Shield },
       { text: 'بدسلوڪي جي رپورٽ ڪٿي ڪجو', icon: Phone },
       { text: 'منهنجا قانوني حق', icon: MessageCircle }
@@ -252,7 +252,7 @@ const TFGBVChatbot = () => {
         typePrompt: 'Enter a headline or paste text...'
       },
       ur: {
-        title: 'TFGBV سپورٹ چیٹ بوٹ',
+        title: 'UKS-Platform سپورٹ چیٹ بوٹ',
         subtitle: 'خفیہ معاونت اور معلومات',
         emergency: 'ہنگامی رابطے',
         quickActions: 'فوری اقدامات',
@@ -271,7 +271,7 @@ const TFGBVChatbot = () => {
         typePrompt: 'ایک سرخی درج کریں یا متن چسپاں کریں...'
       },
       sd: {
-        title: 'TFGBV سپورٽ چيٽ بوٽ',
+        title: 'UKS-Platform سپورٽ چيٽ بوٽ',
         subtitle: 'رازداري سپورٽ ۽ معلومات',
         emergency: 'ايمرجنسي رابطا',
         quickActions: 'تڪڙا قدم',
