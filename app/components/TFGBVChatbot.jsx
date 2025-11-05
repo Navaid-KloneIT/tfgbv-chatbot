@@ -10,7 +10,7 @@ const TFGBVChatbot = () => {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: 'السلام علیکم / आदाब / Hello! I am here to provide you with confidential support and information about Technology-Facilitated Gender-Based Violence (UKS-Platform). You can ask me about:\n\n• What is UKS-Platform?\n• How to stay safe online\n• Where to report abuse\n• Your legal rights\n• Support services available\n\nHow can I help you today?',
+      content: '<p><strong>Technology that Speaks Equality</strong></p><p><strong>Uks Research Centre&rsquo;s AI Platform</strong> brings gender sensitivity to the digital world.<br>It detects bias, challenges stereotypes, and helps you communicate with fairness and empathy in both <strong>Urdu and English</strong>.</p><p><strong>What It Does</strong></p><ul type="disc"> <li><strong>Detect Bias:</strong> Finds sexist or exclusionary language and suggests inclusive alternatives.</li> <li><strong>Analyze Media:</strong> Rates content for gender balance and fair representation.</li> <li><strong>Rewrite with Respect:</strong> Turns harmful or biased text into fair,&nbsp;inclusive communication.</li> </ul> <p><strong>Built in Pakistan, for Pakistan</strong></p> <p>Locally trained, culturally aware &mdash; this AI understands how language, power, and gender work here.</p> <p><strong>Join the Change</strong></p> <p>Together lets build a digital space where every voice matters.</p>',
       timestamp: new Date()
     }
   ]);
@@ -44,7 +44,7 @@ const TFGBVChatbot = () => {
       setMessages([
         {
           role: 'assistant',
-          content: 'You are now in Support Chat mode. I am here to provide confidential support and information about UKS-Platform. How can I help?',
+          content: 'You are now in Support Chat mode. I am here to provide confidential support and information about Uks Feminist AI Platform. How can I help?',
           timestamp: new Date()
         }
       ]);
@@ -106,19 +106,19 @@ const TFGBVChatbot = () => {
 
   const quickActions = {
     en: [
-      { text: 'What is UKS-Platform?', icon: AlertCircle },
+      { text: 'What is Uks Feminist AI Platform?', icon: AlertCircle },
       { text: 'How to stay safe online', icon: Shield },
       { text: 'Where to report abuse', icon: Phone },
       { text: 'My legal rights', icon: MessageCircle }
     ],
     ur: [
-      { text: 'UKS-Platform کیا ہے؟', icon: AlertCircle },
+      { text: 'Uks Feminist AI Platform کیا ہے؟', icon: AlertCircle },
       { text: 'آن لائن محفوظ کیسے رہیں', icon: Shield },
       { text: 'بدسلوکی کی رپورٹ کہاں کریں', icon: Phone },
       { text: 'میرے قانونی حقوق', icon: MessageCircle }
     ],
     sd: [
-      { text: 'UKS-Platform ڇا آهي؟', icon: AlertCircle },
+      { text: 'Uks Feminist AI Platform ڇا آهي؟', icon: AlertCircle },
       { text: 'آن لائن محفوظ ڪيئن رهجو', icon: Shield },
       { text: 'بدسلوڪي جي رپورٽ ڪٿي ڪجو', icon: Phone },
       { text: 'منهنجا قانوني حق', icon: MessageCircle }
@@ -233,7 +233,7 @@ const TFGBVChatbot = () => {
   const getTranslation = (key) => {
     const translations = {
       en: {
-        title: 'UKS-Platform',
+        title: 'Uks Feminist AI Platform',
         subtitle: 'Confidential Support & Information',
         emergency: 'Emergency Contacts',
         quickActions: 'Quick Actions',
@@ -252,7 +252,7 @@ const TFGBVChatbot = () => {
         typePrompt: 'Enter a headline or paste text...'
       },
       ur: {
-        title: 'UKS-Platform سپورٹ چیٹ بوٹ',
+        title: 'Uks Feminist AI Platform سپورٹ چیٹ بوٹ',
         subtitle: 'خفیہ معاونت اور معلومات',
         emergency: 'ہنگامی رابطے',
         quickActions: 'فوری اقدامات',
@@ -271,7 +271,7 @@ const TFGBVChatbot = () => {
         typePrompt: 'ایک سرخی درج کریں یا متن چسپاں کریں...'
       },
       sd: {
-        title: 'UKS-Platform سپورٽ چيٽ بوٽ',
+        title: 'Uks Feminist AI Platform سپورٽ چيٽ بوٽ',
         subtitle: 'رازداري سپورٽ ۽ معلومات',
         emergency: 'ايمرجنسي رابطا',
         quickActions: 'تڪڙا قدم',
@@ -299,8 +299,7 @@ const TFGBVChatbot = () => {
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center space-x-2">
-              <Shield className="text-primary" size={28} />
-              <h2 className="text-xl font-bold text-secondary">Resources</h2>
+              <img src="/uks-logo.jpg" alt="Uks Feminist AI Platform Logo" className="h-30 w-30" />
             </div>
             <button onClick={() => setShowSidebar(false)} className="md:hidden">
               <X size={24} className="text-primary" />
@@ -477,7 +476,7 @@ const TFGBVChatbot = () => {
                     : 'bg-white text-primary'
                 }`}
               >
-                <p className="whitespace-pre-wrap">{message.content}</p>
+                <div dangerouslySetInnerHTML={{ __html: message.content }} />
                 {hasMounted && (
                   <p className="text-xs mt-2 opacity-70">
                     {message.timestamp.toLocaleTimeString()}
