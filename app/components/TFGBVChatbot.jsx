@@ -4,7 +4,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, MessageCircle, Shield, Phone, AlertCircle, Globe, Menu, X, FileText, Upload, Moon, Sun } from 'lucide-react';
 import mammoth from 'mammoth';
-import { v4 as uuidv4 } from 'uuid';
 
 // Helper function to format markdown-style text to HTML
 const formatMessageContent = (content) => {
@@ -64,7 +63,19 @@ const TFGBVChatbot = () => {
   const messagesEndRef = useRef(null);
   const [hasMounted, setHasMounted] = useState(false);
   const fileInputRef = useRef(null);
-  const [sessionId] = useState(() => uuidv4()); // Generate a unique session ID
+
+  // Generate or retrieve persistent session ID from localStorage
+  const [sessionId] = useState(() => {
+    if (typeof window !== 'undefined') {
+      let storedSessionId = localStorage.getItem('chatSessionId');
+      if (!storedSessionId) {
+        storedSessionId = crypto.randomUUID();
+        localStorage.setItem('chatSessionId', storedSessionId);
+      }
+      return storedSessionId;
+    }
+    return crypto.randomUUID();
+  });
 
   // Get current messages and analysis result for active mode
   const messages = messagesByMode[mode] || [];
