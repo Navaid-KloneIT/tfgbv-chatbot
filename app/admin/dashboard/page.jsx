@@ -4,6 +4,95 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LogOut, MessageCircle, FileText, AlertCircle, Shield, RefreshCw, User, Clock } from 'lucide-react';
 
+// Helper function to format markdown-style text to HTML
+const formatMessageContent = (content) => {
+  if (!content) return content;
+
+  // Convert markdown formatting to HTML
+  let formatted = content
+    // Bold: **text** or __text__ -> <strong>text</strong>
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/__(.+?)__/g, '<strong>$1</strong>')
+    // Italic: *text* or _text_ -> <em>text</em>
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/_(.+?)_/g, '<em>$1</em>')
+    // Headings: ### Heading -> <h3>Heading</h3>
+    .replace(/^### (.+)$/gm, '<h3 class="text-lg font-bold mt-4 mb-2">$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2 class="text-xl font-bold mt-4 mb-2">$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1 class="text-2xl font-bold mt-4 mb-2">$1</h1>')
+    // Bullet points: - item or * item -> <li>item</li>
+    .replace(/^[\-\*] (.+)$/gm, '<li class="ml-4">$1</li>')
+    // Wrap consecutive <li> tags in <ul>
+    .replace(/(<li.*?<\/li>\n?)+/g, '<ul class="list-disc ml-6 my-2">$&</ul>')
+    // Line breaks: \n\n -> <br><br>
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+
+  return formatted;
+};
+
+// Helper function to format assistant message (handles JSON and markdown)
+const formatAssistantMessage = (content) => {
+  if (!content) return '';
+
+  // Try to parse as JSON (for analyzer, bias-detector, etc.)
+  try {
+    const parsed = JSON.parse(content);
+
+    // If it's an analysis result with revisedText
+    if (parsed.revisedText) {
+      let output = '<div class="space-y-4">';
+
+      // Revised Text
+      output += '<div>';
+      output += '<h3 class="text-base font-semibold mb-2 text-gray-700">Revised Content:</h3>';
+      output += '<div class="bg-gray-50 p-3 rounded-md border border-gray-200">';
+      output += formatMessageContent(parsed.revisedText);
+      output += '</div>';
+      output += '</div>';
+
+      // Analysis items
+      if (parsed.analysis && parsed.analysis.length > 0) {
+        output += '<div>';
+        output += '<h3 class="text-base font-semibold mb-2 text-gray-700">Issues & Suggestions:</h3>';
+        output += '<div class="space-y-3">';
+
+        parsed.analysis.forEach((item) => {
+          const colors = {
+            'Tone': 'border-orange-400',
+            'Gender-Sensitivity': 'border-pink-400',
+            'Bias': 'border-green-400',
+            'Representation': 'border-red-400',
+            'Inclusivity': 'border-purple-400',
+            'Grammar': 'border-blue-400',
+            'Factual Clarity': 'border-yellow-400'
+          };
+          const borderColor = colors[item.issueType] || 'border-gray-400';
+
+          output += `<div class="border-l-4 ${borderColor} bg-white p-3 rounded-r-lg">`;
+          output += `<p class="text-sm mb-1"><strong>Original:</strong> <span class="italic text-red-600">"${item.originalSnippet}"</span></p>`;
+          output += `<p class="text-sm mb-1"><strong>Issue Type:</strong> ${item.issueType}</p>`;
+          output += `<p class="text-sm mb-1"><strong>Explanation:</strong> ${item.explanation}</p>`;
+          output += `<p class="text-sm"><strong>Suggestion:</strong> ${item.suggestion}</p>`;
+          output += '</div>';
+        });
+
+        output += '</div>';
+        output += '</div>';
+      }
+
+      output += '</div>';
+      return output;
+    }
+
+    // If JSON but not the expected format, show formatted JSON
+    return `<pre class="text-xs bg-gray-100 p-3 rounded overflow-x-auto">${JSON.stringify(parsed, null, 2)}</pre>`;
+  } catch (e) {
+    // Not JSON, treat as regular markdown text
+    return formatMessageContent(content);
+  }
+};
+
 export default function AdminDashboard() {
   const [sessions, setSessions] = useState([]);
   const [selectedSession, setSelectedSession] = useState(null);
@@ -89,15 +178,11 @@ export default function AdminDashboard() {
 
       setSessions(sessionArray);
 
-      // Auto-select first session if none selected
-      if (!selectedSession && sessionArray.length > 0) {
+      // Auto-select first session from new results
+      if (sessionArray.length > 0) {
         setSelectedSession(sessionArray[0]);
-      } else if (selectedSession) {
-        // Update selected session with new data
-        const updatedSession = sessionArray.find(s => s.sessionId === selectedSession.sessionId);
-        if (updatedSession) {
-          setSelectedSession(updatedSession);
-        }
+      } else {
+        setSelectedSession(null);
       }
     } catch (error) {
       console.error('Error fetching messages:', error);
@@ -108,6 +193,7 @@ export default function AdminDashboard() {
 
   const handleModeFilter = (mode) => {
     setSelectedMode(mode);
+    setSelectedSession(null); // Clear selected session when filter changes
     const token = localStorage.getItem('adminToken');
     fetchMessages(token, mode);
   };
@@ -376,11 +462,18 @@ export default function AdminDashboard() {
                                 {new Date(msg.timestamp).toLocaleString()}
                               </span>
                             </div>
-                            <div className="text-sm whitespace-pre-wrap break-words">
-                              {msg.content.length > 1000
-                                ? msg.content.substring(0, 1000) + '...'
-                                : msg.content}
-                            </div>
+                            {msg.role === 'assistant' ? (
+                              <div
+                                className="text-sm break-words"
+                                dangerouslySetInnerHTML={{
+                                  __html: formatAssistantMessage(msg.content)
+                                }}
+                              />
+                            ) : (
+                              <div className="text-sm whitespace-pre-wrap break-words">
+                                {msg.content}
+                              </div>
+                            )}
                           </div>
                         </div>
                       ))}
