@@ -107,12 +107,6 @@ export default function AdminLogin() {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
-
-        <div className="mt-6 text-center text-xs text-primary">
-          <p>Default credentials:</p>
-          <p>Email: admin@uksfeminist.ai</p>
-          <p>Password: Admin@123</p>
-        </div>
       </div>
     </div>
   );
