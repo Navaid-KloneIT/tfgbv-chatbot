@@ -4,6 +4,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, MessageCircle, Shield, Phone, AlertCircle, Globe, Menu, X, FileText, Upload, Moon, Sun } from 'lucide-react';
 import mammoth from 'mammoth';
+import { v4 as uuidv4 } from 'uuid';
 
 // Helper function to format markdown-style text to HTML
 const formatMessageContent = (content) => {
@@ -63,10 +64,32 @@ const TFGBVChatbot = () => {
   const messagesEndRef = useRef(null);
   const [hasMounted, setHasMounted] = useState(false);
   const fileInputRef = useRef(null);
+  const [sessionId] = useState(() => uuidv4()); // Generate a unique session ID
 
   // Get current messages and analysis result for active mode
   const messages = messagesByMode[mode] || [];
   const analysisResult = analysisResultByMode[mode];
+
+  // Helper function to save message to database
+  const saveMessageToDatabase = async (role, content, currentMode) => {
+    try {
+      await fetch('/api/save-message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionId,
+          mode: currentMode,
+          role,
+          content,
+          environment: process.env.NEXT_PUBLIC_ENV || 'production'
+        }),
+      });
+    } catch (error) {
+      console.error('Failed to save message to database:', error);
+    }
+  };
 
   useEffect(() => {
     setHasMounted(true);
@@ -177,6 +200,9 @@ const TFGBVChatbot = () => {
       [mode]: [...(prev[mode] || []), userMessage]
     }));
 
+    // Save user message to database
+    saveMessageToDatabase('user', inputMessage, mode);
+
     setInputMessage('');
     setIsLoading(true);
 
@@ -204,20 +230,25 @@ const TFGBVChatbot = () => {
           ...prev,
           [mode]: data
         }));
+        const assistantContent = mode === 'analyzer'
+          ? "Here is the analysis of your text. See the results displayed below the chat."
+          : mode === 'bias-detector'
+          ? "Here is the bias analysis of your text. Problematic terms have been flagged with neutral alternatives below."
+          : mode === 'feminist-lens'
+          ? "Here is the analysis of representation gaps in your text. Suggestions for inclusivity are provided below."
+          : "Here is the rewritten text with inclusive language. See the changes below.";
+
         setMessagesByMode(prev => ({
           ...prev,
           [mode]: [...(prev[mode] || []), {
             role: 'assistant',
-            content: mode === 'analyzer'
-              ? "Here is the analysis of your text. See the results displayed below the chat."
-              : mode === 'bias-detector'
-              ? "Here is the bias analysis of your text. Problematic terms have been flagged with neutral alternatives below."
-              : mode === 'feminist-lens'
-              ? "Here is the analysis of representation gaps in your text. Suggestions for inclusivity are provided below."
-              : "Here is the rewritten text with inclusive language. See the changes below.",
+            content: assistantContent,
             timestamp: new Date()
           }]
         }));
+
+        // Save assistant message with analysis result to database
+        saveMessageToDatabase('assistant', JSON.stringify(data), mode);
       } else {
         // Format the message content with markdown formatting
         const formattedContent = formatMessageContent(data.message);
@@ -229,17 +260,24 @@ const TFGBVChatbot = () => {
             timestamp: new Date()
           }]
         }));
+
+        // Save assistant message to database
+        saveMessageToDatabase('assistant', data.message, mode);
       }
     } catch (error) {
       console.error("Failed to send message:", error);
+      const errorMessage = "Sorry, I encountered an error. Please check your connection or API quota and try again.";
       setMessagesByMode(prev => ({
         ...prev,
         [mode]: [...(prev[mode] || []), {
           role: 'assistant',
-          content: "Sorry, I encountered an error. Please check your connection or API quota and try again.",
+          content: errorMessage,
           timestamp: new Date()
         }]
       }));
+
+      // Save error message to database
+      saveMessageToDatabase('assistant', errorMessage, mode);
     }
 
     setIsLoading(false);

@@ -1,3 +1,6 @@
 node_modules
 .env
 .next
+generate-admin-hash.js
+ADMIN_DASHBOARD_SETUP.md
+supabase-schema.sql

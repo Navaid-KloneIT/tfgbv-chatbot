@@ -1,4 +1,9 @@
 {
+  "/admin/login/page": "app/admin/login/page.js",
+  "/api/admin/login/route": "app/api/admin/login/route.js",
+  "/api/admin/messages/route": "app/api/admin/messages/route.js",
+  "/admin/dashboard/page": "app/admin/dashboard/page.js",
   "/page": "app/page.js",
-  "/api/chat/route": "app/api/chat/route.js"
+  "/api/chat/route": "app/api/chat/route.js",
+  "/api/save-message/route": "app/api/save-message/route.js"
 }
