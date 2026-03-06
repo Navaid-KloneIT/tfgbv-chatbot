@@ -1,14 +1,10 @@
 // app/api/admin/login/route.js
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import pool from '../../../../lib/db';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this-in-production';
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function POST(req) {
   try {
@@ -22,13 +18,14 @@ export async function POST(req) {
     }
 
     // Fetch admin user from database
-    const { data: adminUser, error } = await supabase
-      .from('admin_users')
-      .select('*')
-      .eq('email', email)
-      .single();
+    const [rows] = await pool.execute(
+      'SELECT * FROM admin_users WHERE email = ?',
+      [email]
+    );
 
-    if (error || !adminUser) {
+    const adminUser = rows[0];
+
+    if (!adminUser) {
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
