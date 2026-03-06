@@ -1,13 +1,9 @@
 // app/api/admin/messages/route.js
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import pool from '../../../../lib/db';
 import jwt from 'jsonwebtoken';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this-in-production';
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function GET(req) {
   try {
@@ -39,32 +35,26 @@ export async function GET(req) {
     const offset = parseInt(searchParams.get('offset') || '0');
 
     // Build query
-    let query = supabase
-      .from('chat_messages')
-      .select('*', { count: 'exact' })
-      .eq('environment', environment)
-      .order('timestamp', { ascending: false })
-      .range(offset, offset + limit - 1);
+    let query = 'SELECT * FROM chat_messages WHERE environment = ?';
+    let countQuery = 'SELECT COUNT(*) as total FROM chat_messages WHERE environment = ?';
+    const params = [environment];
 
-    // Apply mode filter if provided
     if (mode && mode !== 'all') {
-      query = query.eq('mode', mode);
+      query += ' AND mode = ?';
+      countQuery += ' AND mode = ?';
+      params.push(mode);
     }
 
-    const { data, error, count } = await query;
+    query += ' ORDER BY timestamp DESC LIMIT ? OFFSET ?';
 
-    if (error) {
-      console.error('Supabase error:', error);
-      return NextResponse.json(
-        { error: 'Failed to fetch messages' },
-        { status: 500 }
-      );
-    }
+    // Execute both queries
+    const [rows] = await pool.execute(query, [...params, String(limit), String(offset)]);
+    const [countRows] = await pool.execute(countQuery, params);
 
     return NextResponse.json({
       success: true,
-      messages: data,
-      total: count,
+      messages: rows,
+      total: countRows[0].total,
       limit,
       offset
     });
