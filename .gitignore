@@ -4,3 +4,5 @@ node_modules
 generate-admin-hash.js
 ADMIN_DASHBOARD_SETUP.md
 supabase-schema.sql
+.next
+.next/*
