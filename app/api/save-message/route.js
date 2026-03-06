@@ -1,11 +1,7 @@
 // app/api/save-message/route.js
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import pool from '../../../lib/db';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req) {
   try {
@@ -18,29 +14,19 @@ export async function POST(req) {
       );
     }
 
-    const { data, error } = await supabase
-      .from('chat_messages')
-      .insert([
-        {
-          session_id: sessionId,
-          mode,
-          role,
-          content,
-          environment: environment || process.env.ENV || 'production',
-          timestamp: new Date().toISOString()
-        }
-      ])
-      .select();
+    const id = uuidv4();
+    const env = environment || process.env.ENV || 'production';
+    const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-    if (error) {
-      console.error('Supabase error:', error);
-      return NextResponse.json(
-        { error: 'Failed to save message' },
-        { status: 500 }
-      );
-    }
+    const [result] = await pool.execute(
+      'INSERT INTO chat_messages (id, session_id, mode, role, content, environment, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [id, sessionId, mode, role, content, env, timestamp]
+    );
 
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json({
+      success: true,
+      data: [{ id, session_id: sessionId, mode, role, content, environment: env, timestamp }]
+    });
   } catch (error) {
     console.error('Error saving message:', error);
     return NextResponse.json(
