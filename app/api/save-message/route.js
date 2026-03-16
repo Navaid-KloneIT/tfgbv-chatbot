@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req) {
   try {
-    const { sessionId, mode, role, content, environment } = await req.json();
+    const { sessionId, mode, role, content, environment, userId } = await req.json();
 
     if (!sessionId || !mode || !role || !content) {
       return NextResponse.json(
@@ -19,13 +19,13 @@ export async function POST(req) {
     const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     const [result] = await pool.execute(
-      'INSERT INTO chat_messages (id, session_id, mode, role, content, environment, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [id, sessionId, mode, role, content, env, timestamp]
+      'INSERT INTO chat_messages (id, session_id, user_id, mode, role, content, environment, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      [id, sessionId, userId || null, mode, role, content, env, timestamp]
     );
 
     return NextResponse.json({
       success: true,
-      data: [{ id, session_id: sessionId, mode, role, content, environment: env, timestamp }]
+      data: [{ id, session_id: sessionId, user_id: userId || null, mode, role, content, environment: env, timestamp }]
     });
   } catch (error) {
     console.error('Error saving message:', error);
