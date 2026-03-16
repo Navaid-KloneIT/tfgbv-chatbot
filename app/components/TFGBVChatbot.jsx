@@ -558,7 +558,7 @@ const TFGBVChatbot = () => {
         {/* Header */}
         <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'} shadow-md px-3 sm:px-6 py-3 sm:py-4`}>
           <div className="flex flex-col space-y-3">
-            {/* Top row: Menu button, Logo, Icon, and Title */}
+            {/* Top row: Menu button, Logo, Icon, Title, and User Auth */}
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
                 <button onClick={() => setShowSidebar(true)} className="md:hidden flex-shrink-0">
@@ -599,6 +599,57 @@ const TFGBVChatbot = () => {
                      getTranslation('rewriteEngineSubtitle')}
                   </p>
                 </div>
+              </div>
+
+              {/* User Auth Buttons */}
+              <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
+                {user ? (
+                  <>
+                    <a
+                      href="/history"
+                      className={`flex items-center space-x-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${darkMode ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' : 'bg-primary/10 text-primary hover:bg-primary/20'}`}
+                    >
+                      <History size={16} />
+                      <span className="hidden sm:inline">History</span>
+                    </a>
+                    <div className="flex items-center space-x-2">
+                      <div className={`hidden sm:flex items-center space-x-1 px-2 py-1.5 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
+                        <User size={14} className={darkMode ? 'text-blue-400' : 'text-primary'} />
+                        <span className={`text-xs ${darkMode ? 'text-gray-300' : 'text-primary'}`}>{user.name}</span>
+                      </div>
+                      <button
+                        onClick={() => {
+                          localStorage.removeItem('userToken');
+                          localStorage.removeItem('userName');
+                          localStorage.removeItem('userEmail');
+                          localStorage.removeItem('userId');
+                          setUser(null);
+                        }}
+                        className={`flex items-center space-x-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${darkMode ? 'text-gray-400 hover:text-red-400 hover:bg-gray-700' : 'text-gray-500 hover:text-red-500 hover:bg-red-50'}`}
+                        title="Logout"
+                      >
+                        <LogOut size={16} />
+                        <span className="hidden sm:inline">Logout</span>
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <a
+                      href="/auth/login"
+                      className={`flex items-center space-x-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${darkMode ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' : 'bg-primary/10 text-primary hover:bg-primary/20'}`}
+                    >
+                      <User size={16} />
+                      <span>Login</span>
+                    </a>
+                    <a
+                      href="/auth/register"
+                      className="hidden sm:flex items-center px-3 py-2 rounded-lg text-xs sm:text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-colors"
+                    >
+                      Sign Up
+                    </a>
+                  </>
+                )}
               </div>
             </div>
             
