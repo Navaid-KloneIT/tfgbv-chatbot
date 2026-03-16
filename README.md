@@ -56,6 +56,14 @@ A Next.js chatbot application developed for the **Uks Research Centre** to provi
 - Examples: "salesman" → "salesperson", "hygienic Muslim girls" → "health-conscious youth"
 - Maintains original intent while ensuring inclusivity
 
+### 6. User Authentication & Chat History
+
+- User registration and login with JWT-based authentication
+- View past chat sessions filtered by mode
+- Two-column history layout: session list + conversation view
+- Password visibility toggle on login/register forms
+- Guest access (continue without signing in)
+
 ### General
 
 - Multilingual support (English, Urdu, Sindhi)
@@ -63,7 +71,7 @@ A Next.js chatbot application developed for the **Uks Research Centre** to provi
 - Dark mode toggle
 - Real-time chat interface with session tracking
 - File upload capability for `.docx` document analysis
-- All messages persisted to MySQL database
+- All messages persisted to MySQL database with optional user linking
 
 ## Technologies Used
 
@@ -137,7 +145,8 @@ Or import `mysql-schema.sql` through phpMyAdmin.
 
 This creates the following tables:
 
-- **`chat_messages`** — stores all chat interactions (indexed by session ID, mode, environment, and timestamp)
+- **`users`** — stores registered user accounts (name, email, bcrypt-hashed password)
+- **`chat_messages`** — stores all chat interactions (indexed by session ID, user ID, mode, environment, and timestamp)
 - **`admin_users`** — stores admin credentials with bcrypt-hashed passwords
 
 **Default admin account:**
@@ -146,6 +155,8 @@ This creates the following tables:
 - Password: `Admin@123`
 
 > Change these credentials immediately in production.
+
+**Migration note:** If you already have an existing database, run the migration queries at the bottom of `mysql-schema.sql` to add the `users` table and `user_id` column to `chat_messages`.
 
 ## Running the Application
 
@@ -172,7 +183,18 @@ tfgbv-chatbot/
 │   ├── admin/
 │   │   ├── dashboard/page.jsx        # Admin dashboard (sessions & messages)
 │   │   └── login/page.jsx            # Admin login page
+│   ├── auth/
+│   │   ├── login/page.jsx            # User login page
+│   │   └── register/page.jsx         # User registration page
+│   ├── history/
+│   │   └── page.jsx                  # User chat history page
 │   ├── api/
+│   │   ├── auth/
+│   │   │   ├── login/route.js        # User login API
+│   │   │   ├── register/route.js     # User registration API
+│   │   │   └── me/route.js           # Auth token verification API
+│   │   ├── user/
+│   │   │   └── history/route.js      # User chat history API
 │   │   ├── chat/route.js             # Main chat API (all 5 modes)
 │   │   ├── save-message/route.js     # Persist messages to MySQL
 │   │   ├── test-db/route.js          # Database connection test
@@ -253,7 +275,44 @@ Handles chat requests for all five modes.
 
 ### POST `/api/save-message`
 
-Saves a chat message to the MySQL database with session and environment tracking.
+Saves a chat message to the MySQL database with session, environment, and optional user tracking.
+
+### POST `/api/auth/register`
+
+Registers a new user account. Returns a JWT token (7-day expiry).
+
+**Request:**
+
+```json
+{
+  "name": "Your Name",
+  "email": "you@example.com",
+  "password": "yourpassword"
+}
+```
+
+### POST `/api/auth/login`
+
+Authenticates a user and returns a JWT token (7-day expiry).
+
+**Request:**
+
+```json
+{
+  "email": "you@example.com",
+  "password": "yourpassword"
+}
+```
+
+### GET `/api/auth/me`
+
+Verifies the current user token. Requires `Authorization: Bearer <token>` header.
+
+### GET `/api/user/history`
+
+Fetches the logged-in user's chat sessions or messages. Requires `Authorization: Bearer <token>` header.
+
+**Query parameters:** `mode` (filter by mode), `session_id` (get messages for a specific session)
 
 ### POST `/api/admin/login`
 
@@ -268,6 +327,14 @@ Fetches stored messages. Requires `Authorization: Bearer <token>` header.
 ### POST `/api/admin/change-password`
 
 Changes the admin password. Requires `Authorization: Bearer <token>` header.
+
+## User Authentication
+
+Users can register and log in at `/auth/register` and `/auth/login` to:
+
+- Save chat messages linked to their account
+- View past chat history at `/history` with mode filtering
+- Guest access is also supported (continue without signing in)
 
 ## Admin Dashboard
 
