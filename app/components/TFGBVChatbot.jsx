@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, MessageCircle, Shield, Phone, AlertCircle, Globe, Menu, X, FileText, Upload, Moon, Sun } from 'lucide-react';
+import { Send, MessageCircle, Shield, Phone, AlertCircle, Globe, Menu, X, FileText, Upload, Moon, Sun, User, LogOut, History } from 'lucide-react';
 import mammoth from 'mammoth';
 
 // Helper function to format markdown-style text to HTML
@@ -33,6 +33,7 @@ const formatMessageContent = (content) => {
 };
 
 const TFGBVChatbot = () => {
+  const [user, setUser] = useState(null); // { id, name, email }
   const [mode, setMode] = useState('support'); // 'support', 'analyzer', 'bias-detector', 'feminist-lens', 'rewrite-engine'
   // Store messages per mode to preserve chat history when switching tabs
   const [messagesByMode, setMessagesByMode] = useState({
@@ -94,7 +95,8 @@ const TFGBVChatbot = () => {
           mode: currentMode,
           role,
           content,
-          environment: process.env.NEXT_PUBLIC_ENV || 'production'
+          environment: process.env.NEXT_PUBLIC_ENV || 'production',
+          userId: user?.id || null
         }),
       });
     } catch (error) {
@@ -102,8 +104,28 @@ const TFGBVChatbot = () => {
     }
   };
 
+  // Check for existing user session on mount
   useEffect(() => {
     setHasMounted(true);
+    const token = localStorage.getItem('userToken');
+    if (token) {
+      fetch('/api/auth/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => {
+          if (res.ok) return res.json();
+          throw new Error('Invalid token');
+        })
+        .then((data) => {
+          setUser(data.user);
+        })
+        .catch(() => {
+          localStorage.removeItem('userToken');
+          localStorage.removeItem('userName');
+          localStorage.removeItem('userEmail');
+          localStorage.removeItem('userId');
+        });
+    }
   }, []);
 
   const scrollToBottom = () => {
