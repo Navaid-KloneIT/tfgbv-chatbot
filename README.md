@@ -1,203 +1,310 @@
-<p>The user wants me to create a comprehensive README.md file for their NextJS chatbot application. I&#39;ll need to include:</p>
-<blockquote>
-<p>The user wants me to create a comprehensive README.md file for their NextJS chatbot application. I&#39;ll need to include:</p>
-<ol>
-<li>Project title and description</li>
-<li>Purpose of the project</li>
-<li>Features</li>
-<li>How to clone from GitHub</li>
-<li>Installation instructions</li>
-<li>Environment variables setup</li>
-<li>How to run the application</li>
-<li>Project structure</li>
-<li>Technologies used</li>
-<li>How to contribute</li>
-<li>License information</li>
-<li>Contact/support information</li>
-</ol>
-<p>Based on the code provided, this appears to be a chatbot application focused on Technology-Facilitated Gender-Based Violence (UKS-Platform) support in Pakistan, with two modes: Support Chat and Content Analyzer. It supports multiple languages (English, Urdu, Sindhi) and allows document uploads for analysis.</p>
-<p>Let me create a comprehensive README.md file that covers all these aspects.</p>
-</blockquote>
-<h1>UKS-Platform Support Chatbot</h1>
-<p>A comprehensive NextJS chatbot application designed to provide confidential support and information about Technology-Facilitated Gender-Based Violence (UKS-Platform) in Pakistan. The application features two modes: a Support Chat for survivors and a Content Analyzer for journalists and content creators.</p>
-<h2>Table of Contents</h2>
-<ul>
-<li><a href="#purpose">Purpose</a></li>
-<li><a href="#features">Features</a></li>
-<li><a href="#technologies-used">Technologies Used</a></li>
-<li><a href="#installation">Installation</a></li>
-<li><a href="#environment-variables">Environment Variables</a></li>
-<li><a href="#running-the-application">Running the Application</a></li>
-<li><a href="#project-structure">Project Structure</a></li>
-<li><a href="#api-endpoints">API Endpoints</a></li>
-<li><a href="#contributing">Contributing</a></li>
-<li><a href="#license">License</a></li>
-<li><a href="#support">Support</a></li>
-</ul>
-<h2>Purpose</h2>
-<p>This chatbot serves two primary purposes:</p>
-<ol>
-<li><p><strong>Support Chat Mode</strong>: Provides confidential support, information, and resources for women experiencing Technology-Facilitated Gender-Based Violence (UKS-Platform) in Pakistan. It offers guidance on digital safety, legal rights, reporting mechanisms, and available support services.</p>
-</li>
-<li><p><strong>Content Analyzer Mode</strong>: Assists journalists and content creators in reviewing and improving their content based on feminist, gender-sensitive, and media-sensitive parameters developed by Uks Research Centre.</p>
-</li>
-</ol>
-<h2>Features</h2>
-<h3>Support Chat Mode</h3>
-<ul>
-<li>Multilingual support (English, Urdu, Sindhi)</li>
-<li>Confidential and private conversations</li>
-<li>Emergency contact information</li>
-<li>Quick action buttons for common queries</li>
-<li>Culturally sensitive responses</li>
-<li>Information about legal rights under Pakistani law</li>
-<li>Digital safety guidance</li>
-</ul>
-<h3>Content Analyzer Mode</h3>
-<ul>
-<li>Text analysis for gender sensitivity</li>
-<li>Content revision suggestions</li>
-<li>Document upload support (.docx files)</li>
-<li>Structured feedback with explanations</li>
-<li>JSON-formatted analysis results</li>
-</ul>
-<h3>General Features</h3>
-<ul>
-<li>Responsive design for mobile and desktop</li>
-<li>Mode switching between Support and Analyzer</li>
-<li>Real-time chat interface</li>
-<li>File upload capability for document analysis</li>
-</ul>
-<h2>Technologies Used</h2>
-<ul>
-<li><strong>Frontend</strong>: Next.js, React, Tailwind CSS</li>
-<li><strong>Backend</strong>: Next.js API Routes</li>
-<li><strong>AI Integration</strong>: OpenAI API</li>
-<li><strong>File Processing</strong>: Mammoth.js (for .docx file reading)</li>
-<li><strong>Icons</strong>: Lucide React</li>
-</ul>
-<h2>Installation</h2>
-<h3>Prerequisites</h3>
-<ul>
-<li>Node.js (v18 or higher)</li>
-<li>npm or yarn</li>
-<li>OpenAI API key</li>
-</ul>
-<h3>Clone from GitHub</h3>
-<pre><code class="language-bash">git clone https://github.com/your-username/UKS-Platform-chatbot.git
-cd UKS-Platform-chatbot</code></pre>
-<h3>Install Dependencies</h3>
-<pre><code class="language-bash">npm install
+# UKS Feminist AI Platform — TFGBV Chatbot
 
-# or
+A Next.js chatbot application developed for the **Uks Research Centre** to provide confidential support for women experiencing Technology-Facilitated Gender-Based Violence (TFGBV) in Pakistan, along with AI-powered content analysis tools for journalists and content creators.
 
-yarn install</code></pre>
-<h2>Environment Variables</h2>
-<p>Create a <code>.env.local</code> file in the root of your project and add the following:</p>
-<pre><code>OPENAI_API_KEY=your_openai_api_key_here</code></pre>
-<p>To get an OpenAI API key:</p>
-<ol>
-<li>Visit <a href="https://openai.com/">OpenAI&#39;s website</a></li>
-<li>Sign up or log in to your account</li>
-<li>Navigate to the API section</li>
-<li>Generate a new API key</li>
-<li>Copy the key and add it to your <code>.env.local</code> file</li>
-</ol>
-<h2>Running the Application</h2>
-<h3>Development Mode</h3>
-<pre><code class="language-bash">npm run dev
+## Table of Contents
 
-# or
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Environment Variables](#environment-variables)
+- [Database Setup](#database-setup)
+- [Running the Application](#running-the-application)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
+- [Admin Dashboard](#admin-dashboard)
+- [Contributing](#contributing)
+- [License](#license)
+- [Disclaimer](#disclaimer)
 
-yarn dev</code></pre>
-<p>Open <a href="http://localhost:3002">http://localhost:3002</a> in your browser to view the application.</p>
-<h3>Production Build</h3>
-<pre><code class="language-bash">npm run build
+## Features
+
+### 1. Support Chat Mode
+
+- Confidential conversations for survivors of TFGBV
+- Emergency contact information (helplines in English, Urdu, and Sindhi)
+- Quick action buttons for common queries
+- Guidance on Pakistani law, digital safety, and reporting mechanisms
+- Culturally sensitive and empathetic responses
+- Dark mode support
+
+### 2. Content Analyzer Mode
+
+- Reviews text (headlines or full articles) based on feminist guidelines
+- Provides revised content with structured feedback
+- Identifies tone, gender-sensitivity, grammar, and factual clarity issues
+- Supports `.docx` file uploads via Mammoth.js
+- JSON-formatted analysis results
+
+### 3. Bias Detector Mode
+
+- Identifies gender-biased language (e.g., "emotional" vs "expressive")
+- Flags terms disproportionately applied to women
+- Leverages 30-year archive of Pakistani journalism
+- Suggests neutral alternatives
+
+### 4. Feminist Lens Mode
+
+- Scans content for representation gaps (missing women's/marginalized voices)
+- Based on Uks' Gynae Feminism project
+- Suggests inclusive additions to content
+
+### 5. Rewrite Engine Mode
+
+- Transforms exclusionary language in job ads, posters, and other content
+- Examples: "salesman" → "salesperson", "hygienic Muslim girls" → "health-conscious youth"
+- Maintains original intent while ensuring inclusivity
+
+### General
+
+- Multilingual support (English, Urdu, Sindhi)
+- Responsive design for mobile and desktop
+- Dark mode toggle
+- Real-time chat interface with session tracking
+- File upload capability for `.docx` document analysis
+- All messages persisted to MySQL database
+
+## Technologies Used
+
+| Layer            | Technology                          |
+| ---------------- | ----------------------------------- |
+| Frontend         | Next.js 14, React 18, Tailwind CSS |
+| Backend          | Next.js API Routes                  |
+| AI / LLM        | OpenAI API (GPT-4 Turbo)           |
+| Database         | MySQL 2                             |
+| Authentication   | JWT + bcryptjs                      |
+| File Processing  | Mammoth.js                          |
+| Icons            | Lucide React                        |
+| Session Tracking | UUID                                |
+
+## Prerequisites
+
+- Node.js v18 or higher
+- npm or yarn
+- MySQL server (XAMPP recommended for local development)
+- OpenAI API key
+
+## Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/tfgbv-chatbot.git
+cd tfgbv-chatbot
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+## Environment Variables
+
+Create a `.env.local` file in the project root:
+
+```env
+# Environment
+NEXT_PUBLIC_ENV=development
+
+# OpenAI
+OPENAI_API_KEY=your_openai_api_key_here
+
+# MySQL (XAMPP)
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_USER=root
+MYSQL_PASSWORD=
+MYSQL_DATABASE=tfgbv
+
+# JWT Secret (generate your own for production)
+JWT_SECRET=your_jwt_secret_here
+```
+
+To get an OpenAI API key, visit [OpenAI's platform](https://platform.openai.com/), sign in, and generate a new key under the API section.
+
+## Database Setup
+
+1. Start MySQL via XAMPP (or your preferred MySQL server).
+2. Import the schema file into your database:
+
+```bash
+mysql -u root -p tfgbv < mysql-schema.sql
+```
+
+Or import `mysql-schema.sql` through phpMyAdmin.
+
+This creates the following tables:
+
+- **`chat_messages`** — stores all chat interactions (indexed by session ID, mode, environment, and timestamp)
+- **`admin_users`** — stores admin credentials with bcrypt-hashed passwords
+
+**Default admin account:**
+
+- Email: `admin@uksfeminist.ai`
+- Password: `Admin@123`
+
+> Change these credentials immediately in production.
+
+## Running the Application
+
+### Development
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3002](http://localhost:3002) in your browser.
+
+### Production
+
+```bash
+npm run build
 npm start
+```
 
-# or
+## Project Structure
 
-yarn build
-yarn start</code></pre>
-<h2>Project Structure</h2>
-<pre><code>UKS-Platform-chatbot/
+```
+tfgbv-chatbot/
 ├── app/
+│   ├── admin/
+│   │   ├── dashboard/page.jsx        # Admin dashboard (sessions & messages)
+│   │   └── login/page.jsx            # Admin login page
 │   ├── api/
-│   │   └── chat/
-│   │       └── route.js # API endpoint for chat functionality
+│   │   ├── chat/route.js             # Main chat API (all 5 modes)
+│   │   ├── save-message/route.js     # Persist messages to MySQL
+│   │   ├── test-db/route.js          # Database connection test
+│   │   └── admin/
+│   │       ├── login/route.js        # Admin authentication
+│   │       ├── messages/route.js     # Fetch messages (JWT protected)
+│   │       └── change-password/route.js
 │   ├── components/
-│   │   └── UKS-PlatformChatbot.jsx # Main chatbot component
-│   ├── globals.css # Global styles
-│   ├── layout.js # Root layout component
-│   └── page.js # Home page component
-├── public/ # Static assets
-├── .env.local # Environment variables (not in git)
-├── .gitignore # Git ignore file
-├── package.json # Project dependencies and scripts
-├── README.md # This file
-└── tailwind.config.js # Tailwind CSS configuration</code></pre>
-<h2>API Endpoints</h2>
-<h3>POST /api/chat</h3>
-<p>Handles chat requests for both Support and Analyzer modes.</p>
-<p><strong>Request Body:</strong></p>
-<pre><code class="language-json">{
+│   │   └── TFGBVChatbot.jsx          # Main chatbot UI component
+│   ├── page.tsx                      # Home page
+│   ├── layout.tsx                    # Root layout
+│   └── globals.css                   # Global styles
+├── lib/
+│   └── db.js                         # MySQL connection pool
+├── public/
+│   └── uks-logo.jpg                  # Logo asset
+├── mysql-schema.sql                  # Database schema
+├── generate-admin-hash.js            # Utility to generate password hashes
+├── next.config.js                    # Next.js configuration
+├── tailwind.config.js                # Tailwind CSS configuration
+├── package.json
+└── tsconfig.json
+```
+
+## API Endpoints
+
+### POST `/api/chat`
+
+Handles chat requests for all five modes.
+
+**Request:**
+
+```json
+{
   "messages": [
     {
       "role": "user",
       "content": "Your message here",
-      "timestamp": "2023-10-15T19:05:15.000Z"
+      "timestamp": "2024-03-16T10:00:00.000Z"
     }
   ],
   "language": "en",
-  "mode": "support" // or "analyzer"
-}</code></pre>
-<p><strong>Response (Support Mode):</strong></p>
-<pre><code class="language-json">{
-  "message": "AI response here"
-}</code></pre>
-<p><strong>Response (Analyzer Mode):</strong></p>
-<pre><code class="language-json">{
+  "mode": "support"
+}
+```
+
+| `mode` value      | Description            |
+| ------------------ | ---------------------- |
+| `support`          | Support Chat           |
+| `analyzer`         | Content Analyzer       |
+| `bias-detector`    | Bias Detector          |
+| `feminist-lens`    | Feminist Lens          |
+| `rewrite-engine`   | Rewrite Engine         |
+
+**Response (Support Mode):**
+
+```json
+{
+  "message": "AI response text"
+}
+```
+
+**Response (Analysis Modes):**
+
+```json
+{
   "revisedText": "Revised content here",
   "analysis": [
     {
-      "originalSnippet": "Original text snippet",
+      "originalSnippet": "Original text",
       "issueType": "Gender-Sensitivity",
-      "explanation": "Explanation of the issue",
-      "suggestion": "Suggestion for improvement"
+      "explanation": "Why this is an issue",
+      "suggestion": "How to fix it"
     }
   ]
-}</code></pre>
-<h2>Contributing</h2>
-<p>We welcome contributions to improve the UKS-Platform Support Chatbot. Please follow these steps:</p>
-<ol>
-<li>Fork the repository</li>
-<li>Create a new branch (<code>git checkout -b feature/amazing-feature</code>)</li>
-<li>Commit your changes (<code>git commit -m 'Add some amazing feature'</code>)</li>
-<li>Push to the branch (<code>git push origin feature/amazing-feature</code>)</li>
-<li>Open a Pull Request</li>
-</ol>
-<h3>Code Style Guidelines</h3>
-<ul>
-<li>Use ES6+ syntax</li>
-<li>Follow React best practices</li>
-<li>Maintain consistent indentation (2 spaces)</li>
-<li>Write meaningful commit messages</li>
-<li>Add comments for complex logic</li>
-</ul>
-<h2>License</h2>
-<p>This project is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</p>
-<h2>Support</h2>
-<p>If you encounter any issues or have questions about the UKS-Platform Support Chatbot, please:</p>
-<ol>
-<li>Check the <a href="https://github.com/your-username/UKS-Platform-chatbot/issues">Issues</a> page to see if your question has already been addressed</li>
-<li>Create a new issue with detailed information about the problem</li>
-<li>For security concerns, please email us at <a href="mailto:security@example.com">security@example.com</a></li>
-</ol>
-<h2>Acknowledgments</h2>
-<ul>
-<li>Uks Research Centre for providing the guidelines for the Content Analyzer</li>
-<li>OpenAI for the powerful language model that powers this chatbot</li>
-<li>All contributors who have helped improve this project</li>
-</ul>
-<h2>Disclaimer</h2>
-<p>This chatbot provides information only and is not a substitute for professional legal or medical advice. For immediate danger, please call emergency services. The content is designed to be culturally sensitive for the Pakistani context, but users should consult local authorities for specific legal guidance.</p>
+}
+```
+
+### POST `/api/save-message`
+
+Saves a chat message to the MySQL database with session and environment tracking.
+
+### POST `/api/admin/login`
+
+Authenticates an admin user and returns a JWT token (24-hour expiry).
+
+### GET `/api/admin/messages`
+
+Fetches stored messages. Requires `Authorization: Bearer <token>` header.
+
+**Query parameters:** `mode`, `environment`, `limit`, `offset`
+
+### POST `/api/admin/change-password`
+
+Changes the admin password. Requires `Authorization: Bearer <token>` header.
+
+## Admin Dashboard
+
+Access the admin panel at `/admin/login`.
+
+Features:
+
+- View chat sessions filtered by mode and environment
+- Two-column layout: session list + chat history
+- Filter by mode (Support, Analyzer, Bias Detector, Feminist Lens, Rewrite Engine)
+- Filter by environment (Development / Production)
+- Change password functionality
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Code Style
+
+- ES6+ syntax
+- React best practices
+- Consistent indentation (2 spaces)
+- Meaningful commit messages
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- **Uks Research Centre** for providing feminist and gender-sensitive content guidelines
+- **OpenAI** for the language model powering the chatbot
+
+## Disclaimer
+
+This chatbot provides information only and is not a substitute for professional legal or medical advice. For immediate danger, please call emergency services. The content is designed to be culturally sensitive for the Pakistani context, but users should consult local authorities for specific legal guidance.
