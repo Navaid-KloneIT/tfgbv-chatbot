@@ -1,10 +1,20 @@
--- MySQL Database Schema for TFGBV Chatbot Admin Dashboard
+-- MySQL Database Schema for TFGBV Chatbot
 -- Run this SQL in phpMyAdmin or MySQL CLI against the 'tfgbv' database
+
+-- Create users table (for regular user registration/login)
+CREATE TABLE IF NOT EXISTS users (
+  id CHAR(36) NOT NULL DEFAULT (UUID()) PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Create chat_messages table
 CREATE TABLE IF NOT EXISTS chat_messages (
   id CHAR(36) NOT NULL DEFAULT (UUID()) PRIMARY KEY,
   session_id CHAR(36) NOT NULL,
+  user_id CHAR(36) DEFAULT NULL,
   mode ENUM('support', 'analyzer', 'bias-detector', 'feminist-lens', 'rewrite-engine') NOT NULL,
   role ENUM('user', 'assistant') NOT NULL,
   content TEXT NOT NULL,
@@ -12,9 +22,11 @@ CREATE TABLE IF NOT EXISTS chat_messages (
   environment ENUM('development', 'production') NOT NULL DEFAULT 'production',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_chat_messages_session_id (session_id),
+  INDEX idx_chat_messages_user_id (user_id),
   INDEX idx_chat_messages_mode (mode),
   INDEX idx_chat_messages_environment (environment),
-  INDEX idx_chat_messages_timestamp (timestamp DESC)
+  INDEX idx_chat_messages_timestamp (timestamp DESC),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Create admin_users table
@@ -29,3 +41,8 @@ CREATE TABLE IF NOT EXISTS admin_users (
 -- You should change this password after first login
 INSERT IGNORE INTO admin_users (id, email, password_hash)
 VALUES (UUID(), 'admin@uksfeminist.ai', '$2b$10$Rj7FSOz4eoA1lBlDt8tPXO3qwCrBmRAwpTJ3xj/RF10FcsJyknOyK');
+
+-- Migration: If you already have the database, run these to add the new columns/tables:
+-- ALTER TABLE chat_messages ADD COLUMN user_id CHAR(36) DEFAULT NULL AFTER session_id;
+-- ALTER TABLE chat_messages ADD INDEX idx_chat_messages_user_id (user_id);
+-- ALTER TABLE chat_messages ADD FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL;
