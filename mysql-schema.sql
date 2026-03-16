@@ -46,3 +46,16 @@ VALUES (UUID(), 'admin@uksfeminist.ai', '$2b$10$Rj7FSOz4eoA1lBlDt8tPXO3qwCrBmRAw
 -- ALTER TABLE chat_messages ADD COLUMN user_id CHAR(36) DEFAULT NULL AFTER session_id;
 -- ALTER TABLE chat_messages ADD INDEX idx_chat_messages_user_id (user_id);
 -- ALTER TABLE chat_messages ADD FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL;
+
+
+CREATE TABLE IF NOT EXISTS users (
+  id CHAR(36) NOT NULL DEFAULT (UUID()) PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE chat_messages ADD COLUMN user_id CHAR(36) DEFAULT NULL AFTER session_id;
+ALTER TABLE chat_messages ADD INDEX idx_chat_messages_user_id (user_id);
+ALTER TABLE chat_messages ADD FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL;

@@ -62,6 +62,7 @@ const TFGBVChatbot = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const messagesEndRef = useRef(null);
+  const textareaRef = useRef(null);
   const [hasMounted, setHasMounted] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -214,6 +215,11 @@ const TFGBVChatbot = () => {
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
+
+    // Reset textarea height
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
 
     // Clear analysis result for current mode
     setAnalysisResultByMode(prev => ({
@@ -768,14 +774,26 @@ const TFGBVChatbot = () => {
 
         {/* Input Area */}
         <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border-t px-3 sm:px-6 py-3 sm:py-4`}>
-          <div className="flex space-x-2 sm:space-x-4">
-            <input
-              type="text"
+          <div className="flex items-end space-x-2 sm:space-x-4">
+            <textarea
+              ref={textareaRef}
               value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSendMessage()}
+              onChange={(e) => {
+                setInputMessage(e.target.value);
+                // Auto-resize
+                e.target.style.height = 'auto';
+                e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey && !isLoading) {
+                  e.preventDefault();
+                  handleSendMessage();
+                }
+              }}
               placeholder={mode === 'support' ? getTranslation('typeMessage') : getTranslation('typePrompt')}
-              className={`flex-1 px-3 sm:px-4 py-2 sm:py-3 border ${darkMode ? 'border-gray-600 bg-gray-700 text-gray-200 placeholder-gray-400' : 'border-gray-300 bg-white text-primary'} rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base`}
+              rows={1}
+              className={`flex-1 px-3 sm:px-4 py-2 sm:py-3 border ${darkMode ? 'border-gray-600 bg-gray-700 text-gray-200 placeholder-gray-400' : 'border-gray-300 bg-white text-primary'} rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base resize-none overflow-y-auto`}
+              style={{ maxHeight: '200px' }}
             />
             
             {['analyzer', 'bias-detector', 'feminist-lens', 'rewrite-engine'].includes(mode) && (
