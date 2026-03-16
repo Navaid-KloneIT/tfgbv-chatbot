@@ -148,17 +148,19 @@ export async function POST(req) {
       }))
     ];
 
+    const isAnalysisMode = ['analyzer', 'bias-detector', 'feminist-lens', 'rewrite-engine'].includes(mode);
+
     const completion = await openai.chat.completions.create({
       model: 'gpt-4-turbo',
       messages: openaiMessages,
       temperature: 0.5,
-      max_completion_tokens: 2000,
-      response_format: ['analyzer', 'bias-detector', 'feminist-lens', 'rewrite-engine'].includes(mode) ? { type: 'json_object' } : { type: 'text' },
+      max_completion_tokens: isAnalysisMode ? 16000 : 4000,
+      response_format: isAnalysisMode ? { type: 'json_object' } : { type: 'text' },
     });
 
     const responseContent = completion.choices[0].message.content;
 
-    if (['analyzer', 'bias-detector', 'feminist-lens', 'rewrite-engine'].includes(mode)) {
+    if (isAnalysisMode) {
       try {
         const parsedJson = JSON.parse(responseContent);
         return NextResponse.json(parsedJson);
