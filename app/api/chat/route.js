@@ -154,7 +154,7 @@ export async function POST(req) {
       model: 'gpt-4-turbo',
       messages: openaiMessages,
       temperature: 0.5,
-      max_completion_tokens: isAnalysisMode ? 16000 : 4000,
+      max_completion_tokens: 4096,
       response_format: isAnalysisMode ? { type: 'json_object' } : { type: 'text' },
     });
 
