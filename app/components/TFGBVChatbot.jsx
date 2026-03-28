@@ -229,7 +229,7 @@ const TFGBVChatbot = () => {
 
     const userMessage = {
       role: 'user',
-      content: inputMessage,
+      content: inputMessage.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>'),
       timestamp: new Date()
     };
 
