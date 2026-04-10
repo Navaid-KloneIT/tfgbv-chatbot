@@ -151,11 +151,13 @@ export async function POST(req) {
     const isAnalysisMode = ['analyzer', 'bias-detector', 'feminist-lens', 'rewrite-engine'].includes(mode);
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4-turbo',
+      model: 'gpt-5.4-mini',
       messages: openaiMessages,
       temperature: 0.5,
-      max_completion_tokens: 4096,
-      response_format: isAnalysisMode ? { type: 'json_object' } : { type: 'text' },
+      max_completion_tokens: 4096, // ✅ MUST use this
+      response_format: isAnalysisMode 
+        ? { type: 'json_object' } 
+        : { type: 'text' },
     });
 
     const responseContent = completion.choices[0].message.content;
